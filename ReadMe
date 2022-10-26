@@ -1,0 +1,16 @@
+In diesen R wird der The Gasoline Problem behandelt. Was genau dieses Problem ist kann man in dem Paper lesen, den auch in Repositorie zu finden ist. Kurzgefasst, wir haben zwei Mengen X und Y, in Y sind fest gelegten Abschnitten von Straßen und in X sind die sortierte nach der Größe die Benzin Menge. Wir nehmen an, dass eine Einheit von Benzin reicht für eine Einheit von Straße. Die Summe von beiden Mengen sind gleich wobei die Abschnitte und die Benzin Menge sind nicht gleich. Unser Ziel ist die komplette Strecke aus Y bewältigen, sodass die enge von Benzin in Auto minimal gehalten ist.
+In dem Projekt werden wir zuerst den Algorithmus aus Paper Implementieren.
+Der Algorithmus besteht ausfolgendem schritten:
+1)	Eine duale Matrix zij, die sag wo die welsche Menge platziert werden sollte, die bekommen wir durch Lösen des LP aus Papier.
+2)	Dann wir die Matrix durch mehrmals Transformation angepasst (Diese Verfahren ist genau in Papier beschrieben).
+3)	Die Neue Matrix wird in ein Graph verwandelt und wird ein Rounding Verfahren anwenden, die auch in Papier beschrieben, wurde. Dank diesen Verfahren bekommen wir eine Lösung Matrix für unsere Problem.
+Der Zweite Teil die Arbeit besteht daran, eine neue Greedy Algorithmus für Lösung dieses Problem zu entwickeln. Also für jede Moment und für jede Abschnitt wir so eine Menge gewällt wird, die minimiert die Menge von Benzin in Auto so dass es reicht für nächste Tankstelle.
+
+
+The The Gasoline Problem is dealt with in this Repositorie. What exactly this problem is can be read in the paper, which can also be found in R. In short, we have two sets X and Y, in Y are fixed sections of roads and in X are sorted by size the gasoline set. We assume that one unit of gasoline is enough for one unit of road. The sum of both quantities are equal whereas the sections and the gasoline quantity are not equal. Our goal is to cover the entire distance from Y, so that the amount of petrol in the car is kept to a minimum.
+In the project we will first implement the algorithm from Paper. The algorithm consists of the following steps:
+1) A dual matrix zij, which tells where the white set should be placed, we get by solving the LP from paper.
+2) Then we adjust the matrix by transforming it several times (this procedure is exactly described in paper).
+3) The new matrix is transformed into a graph and a rounding procedure is applied, which is also described in the paper. Thanks to these procedures we get a solution matrix for our problem.
+The second part of the work consists in developing a new greedy algorithm for solving this problem. So, for each moment and for each section we will choose a quantity that minimises the amount of gasoline in the car so that it is enough for the next gas station.
+
