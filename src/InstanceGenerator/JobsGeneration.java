@@ -1,6 +1,8 @@
 package InstanceGenerator;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 public class JobsGeneration {
@@ -59,7 +61,19 @@ public class JobsGeneration {
         }
         if (sort == true){
             Arrays.sort(JobList);
+            JobList = flipArray(JobList, n);
         }
+        return JobList;
+    }
+
+    private int[] flipArray(int [] JobList, int n){
+        int[] tempList = new int[n];
+        int j = n - 1;
+        for (int i = 0; i < n; i++){
+            tempList[i] = JobList[j];
+            j--;
+        }
+        JobList = tempList;
         return JobList;
     }
 
@@ -71,7 +85,7 @@ public class JobsGeneration {
             if (index == 0){
                 System.out.print("[" + JobsList[index]);
             }
-            if (index == (length - 1)){
+            else if (index == (length - 1)){
                 System.out.print("," + JobsList[index] + "]");
             }
             else {

@@ -6,8 +6,8 @@ public class Main {
     public static void main(String[] args) throws GRBException {
         JobsGeneration jobsGenerator = new JobsGeneration();
         int numberOfJobs = 3;
-        int maxSumOfJobs = 10;
-        int maxSizeOfOneJob = 5;
+        int maxSumOfJobs = 12;
+        int maxSizeOfOneJob = 10;
 
         int Y_jobs[];
         Y_jobs = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs,false);
