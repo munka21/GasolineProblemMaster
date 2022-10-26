@@ -1,12 +1,14 @@
 package ModelG;
 import gurobi.*;
 
+import java.util.Arrays;
+
 public class ModelGurobi {
 
-    public static void solveLP (int n, int x[], int y[]) throws GRBException {
+    public static double[][] solveLP (int n, int x[], int y[]) throws GRBException {
 
         int constraintnummber = 0;
-        //Data come from main
+        double [][] Output = new double[n][n];
         /*
         Erstmal sind die Variablen für Test des Model fest
         gelegt, normalaweise werden die in andere Klasse
@@ -115,10 +117,17 @@ public class ModelGurobi {
                 System.out.print(" " + z[i][j].get(GRB.DoubleAttr.X));
             }
         }
+        //To Output
+        for (int i = 0; i < n ; i++){
+            for (int j = 0; j < n; j++){
+                Output[i][j] = z[i][j].get(GRB.DoubleAttr.X);
+            }
+        }
 
         // Dispose of model and environment
         model.dispose();
         env.dispose();
 
+        return Output;
     }
 }

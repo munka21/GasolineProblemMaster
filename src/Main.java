@@ -5,19 +5,20 @@ import gurobi.GRBException;
 public class Main {
     public static void main(String[] args) throws GRBException {
         JobsGeneration jobsGenerator = new JobsGeneration();
-        int numberOfJobs = 3;
-        int maxSumOfJobs = 12;
-        int maxSizeOfOneJob = 10;
+        int numberOfJobs = 4;
+        int maxSumOfJobs = 18;
+        int maxSizeOfOneJob = 12;
+        double[][] z_ij = new double[numberOfJobs][numberOfJobs];
 
-        int Y_jobs[];
-        Y_jobs = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs,false);
-        jobsGenerator.printJobs(Y_jobs);
-        int X_jobs[];
-        X_jobs = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs,true);
-        jobsGenerator.printJobs(X_jobs);
+        int y_i[];
+        y_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs,false);
+        jobsGenerator.printJobs(y_i);//Verstecken
+        int x_i[];
+        x_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs,true);
+        jobsGenerator.printJobs(x_i);//Verstecken
 
         ModelGurobi model = new ModelGurobi();
-        model.solveLP(numberOfJobs, X_jobs, Y_jobs);
+        z_ij = model.solveLP(numberOfJobs, x_i, y_i);
 
     }
 }
