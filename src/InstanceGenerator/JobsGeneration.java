@@ -1,8 +1,6 @@
 package InstanceGenerator;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Random;
 
 public class JobsGeneration {

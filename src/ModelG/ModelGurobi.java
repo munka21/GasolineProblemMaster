@@ -9,32 +9,6 @@ public class ModelGurobi {
 
         int constraintnummber = 0;
         double [][] Output = new double[n][n];
-        /*
-        Erstmal sind die Variablen für Test des Model fest
-        gelegt, normalaweise werden die in andere Klasse
-        generiert und an des Model weitergegeben
-         */
-
-        /*
-        //Beispiel 2
-        int n = 5;
-        int y[] = {9, 4, 3, 7, 2};
-        int x[] = {10, 5, 5, 3, 2};
-         */
-
-        /*
-        //Beispiel 3
-        int n = 10;
-        int y[] ={9,111,5,18,13,12,18,20,41,30};
-        int x[] ={150,40,35,26,10,6,4,3,2,1};
-         */
-        /*
-        //Beispiel 1
-        int n = 3;
-        int y[] = {9, 4, 7};
-        int x[] = {10, 5, 5};
-        */
-
 
         // Create empty environment, set options, and start:
         GRBEnv env = new GRBEnv(true);
@@ -45,7 +19,8 @@ public class ModelGurobi {
         GRBModel model = new GRBModel(env);
 
         // Create variables:
-        GRBVar alpha = model.addVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS , "alpha");
+        //GRBVar alpha = model.addVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS , "alpha");
+        GRBVar alpha = model.addVar(-GRB.INFINITY, 0.0, 0.0, GRB.CONTINUOUS , "alpha");
         GRBVar beta = model.addVar(0.0, GRB.INFINITY, 0.0, GRB.CONTINUOUS, "beta");
         GRBVar[][] z = new GRBVar[n][n];
         for (int i = 0; i < n; i++){
