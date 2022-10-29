@@ -24,19 +24,18 @@ public class Main {
         jobsGenerator.printJobs(y_i);//Verstecken
         jobsGenerator.printJobs(x_i);//Verstecken
 
-        z_ij = model.solveLP(numberOfJobs, x_i, y_i);
+        //z_ij = model.solveLP(numberOfJobs, x_i, y_i);
 
         //Test*************************
         //TODO: Lösche Test wenn schon alles stimmt
         z_ij = new double[][]{
-                {0.2, 0.4, 0.4},
-                {0.5, 0.3, 0.2},
-                {0.3, 0.3, 0.4}
+                {0.4, 0.6, 0.0},
+                {0.0, 0.0, 1.0},
+                {0.6, 0.4, 0.0}
         };
+        //*****************************
 
-        System.out.println(z_ij[1][0]);
-
-        z_j = matrix.generateFractionalValues(z_ij, x_i, numberOfJobs);
+        z_j = matrix.GenerateFractionalValues(z_ij, x_i, numberOfJobs);
 
         System.out.println(Arrays.toString(z_j));
     }
