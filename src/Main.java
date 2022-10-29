@@ -1,17 +1,19 @@
 import InstanceGenerator.*;
 import ModelG.*;
-import gurobi.GRBException;
+import gurobi.*;
+import Greedy.*;
 
 import java.util.Arrays;
 
 public class Main {
 
-    static int numberOfJobs = 3;
-    static int maxSumOfJobs = 20;
-    static int maxSizeOfOneJob = 15;
+    static int numberOfJobs = 20;
+    static int maxSumOfJobs = 1000;
+    static int maxSizeOfOneJob = 100;
     public static void main(String[] args) throws GRBException {
         JobsGeneration jobsGenerator = new JobsGeneration();
         MatrixOperations matrix = new MatrixOperations();
+        GreedyAlgo greedy = new GreedyAlgo();
         int y_i[];
         int x_i[];
         double[][] z_ij;
@@ -28,16 +30,20 @@ public class Main {
 
         //Test*************************
         //TODO: Lösche Test wenn schon alles stimmt
+        /*
         z_ij = new double[][]{
                 {0.4, 0.6, 0.0},
                 {0.0, 0.0, 1.0},
                 {0.6, 0.4, 0.0}
         };
         //*****************************
+        */
+        //z_j = matrix.generateFractionalValues(z_ij, x_i, numberOfJobs);
+        int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
+        for (int i = 0; i < numberOfJobs; i++){
+            System.out.println(Arrays.toString(R[i]));
+        }
 
-        z_j = matrix.generateFractionalValues(z_ij, x_i, numberOfJobs);
-
-        System.out.println(Arrays.toString(z_j));
     }
 
 }

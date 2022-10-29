@@ -21,7 +21,7 @@ public class MatrixOperations {
         return z_j;
     }
 
-    public boolean isFinished (double[][] z_ij, int index, int j_end){
+    private boolean isFinished (double[][] z_ij, int index, int j_end){
         double sum = 0.0;
         for (int j = 0; j < j_end; j++){
             sum = sum + z_ij[index][j];
@@ -33,7 +33,7 @@ public class MatrixOperations {
             return false;
         }
     }
-    public boolean consecutivenessPropertyForJFromI_StartToI_End(double[][] z_ij, int i_start, int i_end, int j_end){
+    private boolean consecutivenessPropertyForJFromI_StartToI_End(double[][] z_ij, int i_start, int i_end, int j_end){
         double sum = 0.0;
         for (int i = i_start + 1; i < i_end; i++){
             for (int j = 0; j < j_end; j++){
@@ -48,7 +48,7 @@ public class MatrixOperations {
         }
     }
 
-    public boolean consecutivenessPropertyForJInMatrix(double[][] z_ij, int n, int j_end){
+    private boolean consecutivenessPropertyForJInMatrix(double[][] z_ij, int n, int j_end){
         double sum = 0.0;
         for (int i = 0; i < n; i++){
             for (int j = 0; j < j_end; j++){
@@ -62,7 +62,7 @@ public class MatrixOperations {
             return false;
         }
     }
-    public double[] shift(int n, double[][] z_ij, int j, int[] x_i, int i_start, int i_end, double delta, int i_2){
+    private double[] shift(int n, double[][] z_ij, int j, int[] x_i, int i_start, int i_end, double delta, int i_2){
         double[] a_i = new double[n];
         for (int i = 0; i <n; i++){
             //alle, die nicht in interwall i_start und i_end sind
