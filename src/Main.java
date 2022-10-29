@@ -35,7 +35,7 @@ public class Main {
         };
         //*****************************
 
-        z_j = matrix.GenerateFractionalValues(z_ij, x_i, numberOfJobs);
+        z_j = matrix.generateFractionalValues(z_ij, x_i, numberOfJobs);
 
         System.out.println(Arrays.toString(z_j));
     }

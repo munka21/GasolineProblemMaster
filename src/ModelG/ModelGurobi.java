@@ -1,8 +1,6 @@
 package ModelG;
 import gurobi.*;
 
-import java.util.Arrays;
-
 public class ModelGurobi {
 
     public static double[][] solveLP (int n, int x[], int y[]) throws GRBException {
