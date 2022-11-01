@@ -26,7 +26,7 @@ public class Main {
         jobsGenerator.printJobs(y_i);//Verstecken
         jobsGenerator.printJobs(x_i);//Verstecken
 
-        //z_ij = model.solveLP(numberOfJobs, x_i, y_i);
+        z_ij = model.solveLP(numberOfJobs, x_i, y_i);
 
         //Test*************************
         //TODO: Lösche Test wenn schon alles stimmt
@@ -38,11 +38,10 @@ public class Main {
         };
         //*****************************
         */
-        //z_j = matrix.generateFractionalValues(z_ij, x_i, numberOfJobs);
+        z_j = matrix.generateFractionalValues(z_ij, x_i, numberOfJobs);
         int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
-        for (int i = 0; i < numberOfJobs; i++){
-            System.out.println(Arrays.toString(R[i]));
-        }
+        greedy.printOutput(R, numberOfJobs);
+
 
     }
 

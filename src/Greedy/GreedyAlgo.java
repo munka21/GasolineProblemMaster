@@ -1,6 +1,8 @@
 package Greedy;
 
 
+import java.util.Arrays;
+
 public class GreedyAlgo {
     int index = 0;
     int indexBiggestX = 0;
@@ -49,9 +51,15 @@ public class GreedyAlgo {
                 R[index][j] = 1;
                 indexBiggestX = searchForBiggestX(isUsed, n);
                 j--;
-                continue;
             }
         }
         return R;
+    }
+
+    public void printOutput(int[][] R, int n){
+        System.out.println("\nThe solution of gasoline problem with greedy:");
+        for (int i = 0; i < n; i++){
+            System.out.println(Arrays.toString(R[i]));
+        }
     }
 }

@@ -1,6 +1,8 @@
 package ModelG;
 import gurobi.*;
 
+import java.util.Arrays;
+
 public class ModelGurobi {
 
     public static double[][] solveLP (int n, int x[], int y[]) throws GRBException {
@@ -84,17 +86,12 @@ public class ModelGurobi {
         System.out.println(beta.get(GRB.StringAttr.VarName) + " = " + beta.get(GRB.DoubleAttr.X));
 
         System.out.println("\nz["+ n + "][" + n + "] : ");
-        for (int i = 0; i < n; i++){
-            System.out.print("\n");
-            for (int j = 0; j < n; j++){
-                System.out.print(" " + z[i][j].get(GRB.DoubleAttr.X));
-            }
-        }
         //To Output
         for (int i = 0; i < n ; i++){
             for (int j = 0; j < n; j++){
                 Output[i][j] = z[i][j].get(GRB.DoubleAttr.X);
             }
+            System.out.println(Arrays.toString(Output[i]));
         }
 
         // Dispose of model and environment
