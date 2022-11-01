@@ -74,21 +74,17 @@ public class MatrixOperations {
                 a_i[i] = z_ij[i][j] + delta;
             }
             //i_start und i_end
+            /*
+              TODO: wenn i_2 wird als eine einzige Element genomenen
+              TODO: dann ausdem Schleife nächste zwei if nehmen
+             */
             if (x_i[i_start] == x_i[i_end]){
                 a_i[i_start] = z_ij[i_start][j] - delta;
                 a_i[i_end] = z_ij[i_end][j];
-
             } else if (x_i[i_start] != x_i[i_end]) {
                 //TODO: i_2 ist hier als eine Zahl eingegeben, aber in Paper steht dass es ein Interwall zwischen i_start und i_end ist?
                 a_i[i_start] = z_ij[i_start][j] - (delta*((x_i[i_2]-x_i[i_end])/(x_i[i_start]-x_i[i_end])));
                 a_i[i_end] = z_ij[i_end][j] -(delta*((x_i[i_start]-x_i[i_2])/(x_i[i_start]-x_i[i_end])));
-                //TODO: Alternative für oben, besser aber ob korrekt, implementiere i_2 als Array, also hier eine schleife=>, du kannst einfach von i_star dann zu i_end gehen, dann i_2 von oben kann gelöscht werden
-                /*
-                for(i_2 = i_start + 1; i_2 < i_end - 1; i++){
-                    a_i[i_start] = z_ij[i_start][j] - (delta*((x_i[i_2]-x_i[i_end])/(x_i[i_start]-x_i[i_end])));
-                    a_i[i_end] = z_ij[i_end][j] -(delta*((x_i[i_start]-x_i[i_2])/(x_i[i_start]-x_i[i_end])));
-                }
-                */
             }
         }
         return a_i;
