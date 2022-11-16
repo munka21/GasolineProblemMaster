@@ -46,7 +46,6 @@ public class Main {
         int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
         greedy.printOutput(R, numberOfJobs);
 
-
     }
 
 }
