@@ -62,32 +62,44 @@ public class MatrixOperations {
             return false;
         }
     }
-    private double[] shift(int n, double[][] z_ij, int j, int[] x_i, int i_start, int i_end, double delta, int i_2){
+    //TODO: es muss noch abgesichert und validate werden
+    /*
+    TODO:1)if i_1 oder i_3 null und kann zum weiteren springen dann macht, sonst ende
+    TODO:2)if 1 in Zeile ereicht dann nächste Element mit dem Index oder vorherige wenn möglich, sonst ende
+    TODO:3)Wenn keine weiter Verfahren möglich, dann return a_i
+     */
+    private double[] shift(int n, double[][] z_ij, int j, int[] x_i, int i_1, int i_3, double delta, int i_2) throws Exception {
         double[] a_i = new double[n];
-        for (int i = 0; i <n; i++){
-            //alle, die nicht in interwall i_start und i_end sind
-            if ((i < i_start) || (i > i_end)){
-                a_i[i] = z_ij[i][j];
+        if (interwallValidation(i_1, i_2, i_3)){
+            for (int i = 0; i <n; i++){
+                //alle, die nicht in Interwall i_1 und i_3 sind
+                if ((i < i_1) || (i > i_3)){
+                    a_i[i] = z_ij[i][j];
+                }
+                //for i_2
+                a_i[i_2] = z_ij[i_2][j] + delta;
+                //alle in Interwall i_1 und i_3
+                if (x_i[i_1] == x_i[i_3]){
+                    a_i[i_1] = z_ij[i_1][j] - delta;
+                    a_i[i_3] = z_ij[i_3][j];
+                } else if (x_i[i_1] != x_i[i_3]) {
+                    a_i[i_1] = z_ij[i_1][j] - (delta*((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3])));
+                    a_i[i_3] = z_ij[i_3][j] -(delta*((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3])));
+                }
             }
-            //alle in Interwall i_star und i_end
-            if ((i > i_start) && (i < i_end)){
-                a_i[i] = z_ij[i][j] + delta;
-            }
-            //i_start und i_end
-            /*
-              TODO: wenn i_2 wird als eine einzige Element genomenen
-              TODO: dann ausdem Schleife nächste zwei if nehmen
-             */
-            if (x_i[i_start] == x_i[i_end]){
-                a_i[i_start] = z_ij[i_start][j] - delta;
-                a_i[i_end] = z_ij[i_end][j];
-            } else if (x_i[i_start] != x_i[i_end]) {
-                //TODO: i_2 ist hier als eine Zahl eingegeben, aber in Paper steht dass es ein Interwall zwischen i_start und i_end ist?
-                a_i[i_start] = z_ij[i_start][j] - (delta*((x_i[i_2]-x_i[i_end])/(x_i[i_start]-x_i[i_end])));
-                a_i[i_end] = z_ij[i_end][j] -(delta*((x_i[i_start]-x_i[i_2])/(x_i[i_start]-x_i[i_end])));
-            }
+        } else if (interwallValidation(i_1, i_2, i_3) == false) {
+            throw new Exception("The Interwall is false");
         }
         return a_i;
+    }
+
+    private boolean interwallValidation(int i_1, int i_2, int i_3){
+        if ((i_2 > i_1) && (i_3 > i_2) && (i_3 > (i_1 + 1))){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public double[][] transform(int n){

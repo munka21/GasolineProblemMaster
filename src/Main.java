@@ -18,6 +18,10 @@ public class Main {
         int x_i[];
         double[][] z_ij;
         double[] z_j;
+        double delta = 0.01;
+        int i_1 = 1;
+        int i_2 = 2;
+        int i_3 = 4;
         ModelGurobi model = new ModelGurobi();
 
         y_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs,false);
