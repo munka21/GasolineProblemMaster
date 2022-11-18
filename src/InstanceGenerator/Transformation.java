@@ -1,7 +1,5 @@
 package InstanceGenerator;
 
-import java.util.Arrays;
-
 //TODO: teste alle Funktionen :(
 //TODO: Fehler Behandlung
 
@@ -12,11 +10,8 @@ public class Transformation {
      */
     boolean shiftIsPossible;
     boolean[] Alli_1Index;
-    int i_1Index;
     boolean[] Alli_2Index;
-    int i_2Index;
     boolean[] Alli_3Index;
-    int i_3Index;
 
     public double[][] transform(int n, double[][] z_ij, int j, int i_1, int i_2, int i_3){
         double[][] z_prime = new double[n][n];
@@ -24,6 +19,7 @@ public class Transformation {
     }
 
     public double[] shift(int n, double[][] z_ij, int j, int i_1, int i_2, int i_3, double delta, int[] x_i){
+        //TODO: es muss noch gepröft werden ob z_ij > 0 ist, wenn nicht such weiter nach passenden
         double[] a_i = new double[n];
         isBeforShiftValid(z_ij, j, i_1, i_2, i_3, delta, x_i);
         //For alle außer i_1, i_2, i_3
@@ -34,6 +30,7 @@ public class Transformation {
                 }
             }
         }
+        //TODO: prüfe noch erste a_i_w ob nicht größer 1 mit erste delta
         //dann a_i ist einfach die Spalte in z_ij
         if (shiftIsPossible == false){
             for (int i = 0; i < n; i++){
@@ -46,7 +43,7 @@ public class Transformation {
 
         while (shiftIsPossible){
             setArraysToShift(i_1, i_2, i_3);
-
+            //TODO: Ask: Sollte immer in neue Saplte j bzw in Array a_i immer die Summe gleich 1 sein oder max 1? soll ich es immer prüfen?
             a_i[i_2] = z_ij[i_2][j] + delta;
             if ((firstRun == true) && (x_i[i_1] == x_i[i_3])){
                 a_i[i_1] = z_ij[i_1][j] - delta;
@@ -56,67 +53,108 @@ public class Transformation {
                 a_i[i_3] = z_ij[i_3][j] -(delta*((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3])));
             }
             firstRun = false;
-            //FOR i_1
-            i_1 = setIndexi_1(a_i, i_1, i_2 ,i_3, delta);
-            i_3 = setIndexi_3(a_i, i_1, i_2 ,i_3, delta);
-
-
+            i_1 = setIndexi_1(a_i, i_1, delta);
+            i_3 = setIndexi_3(a_i, i_3, delta);
+            i_2 = setIndexi_2(a_i, i_2, delta, j, z_ij);
         }
         return a_i;
     }
 
-    private int setIndexi_2(double[] a_i, int i_1, int i_2, int i_3, double delta, int j, double[][] z_ij){
-        /* Is Summe = 1 in Zeile,
-        kann delte noch drauf addiert werden somit es nicht größer als 1 wird,
-         falls neue Index wird für i_2 dann ist er in i_1 oder i_3
-
-         wir prüfen bis j, aber mit weiteren Zeilen es wird größer als 1, macht schi keine Soregen erst darüber
-         */
-
-        double sum = 0.0;
-        for (int index_j = 0; index_j < j; index_j++){
-            sum = sum + z_ij[i_2][j];
-        }
-        if (sum >= 1.0){
-
+    private int setIndexi_2(double[] a_i, int i_2, double delta, int j, double[][] z_ij){
+        double sum = calculateSum(a_i, z_ij, i_2, j);
+        if (checSum(sum, delta) == false){
+            shiftIsPossible = false;
+            int temp_i_2 = i_2;
+            while (true) {
+                temp_i_2--;
+                if(Alli_1Index[temp_i_2] == false){
+                    sum = calculateSum(a_i, z_ij, temp_i_2, j);
+                    if (checSum(sum, delta) == true){
+                        shiftIsPossible = true;
+                        return temp_i_2;
+                    }
+                }
+                if (Alli_1Index[temp_i_2] == true){
+                    break;
+                }
+            }
+            temp_i_2 = i_2;
+            while (true){
+                temp_i_2++;
+                if (Alli_3Index[temp_i_2] == false){
+                    sum = calculateSum(a_i, z_ij, temp_i_2, j);
+                    if (checSum(sum, delta) == true){
+                        shiftIsPossible = true;
+                        return temp_i_2;
+                    }
+                }
+                if (Alli_3Index[temp_i_2] == true){
+                    break;
+                }
+            }
         }
         return i_2;
     }
 
+    private boolean checSum(double sum, double delta){
+        if ((sum >= 1.0) || (sum + delta > 1.0)){
+            return false;
+        }
+        return true;
+    }
 
-    private int setIndexi_1(double[] a_i, int i_1, int i_2, int i_3, double delta){
-        if ((isDelatuseableForBounds(a_i[i_1], delta) == false) || (a_i[i_1] == 0.0)){
-            shiftIsPossible = false;
-            if ((Alli_2Index[i_1 + 1] == false) && (Alli_3Index[i_1 + 1] == false)){
-                if ((i_1 + 1 != i_2) && (i_1 + 1 != i_3)){
+    private double calculateSum(double[] a_i, double[][] z_ij, int index, int j){
+        double sum = 0.0;
+        for (int index_j = 0; index_j < j-1; index_j++){
+            sum = sum + z_ij[index][j];
+        }
+        sum = sum + a_i[index];
+        return sum;
+    }
+
+
+    private int setIndexi_1(double[] a_i, int i_1, double delta){
+        boolean test;
+        do {
+            test = true;
+            if ((isDelatuseableForBounds(a_i[i_1], delta) == false) || (a_i[i_1] == 0.0)){
+                shiftIsPossible = false;
+                test =false;
+                if ((Alli_2Index[i_1 + 1] == false) && (Alli_3Index[i_1 + 1] == false)){
                     i_1++;
                     shiftIsPossible = true;
+                } else if ((Alli_2Index[i_1 + 1] == true) || (Alli_3Index[i_1 + 1] == true)) {
+                    shiftIsPossible = false;
+                    return i_1;
                 }
             }
-        }
+        }while (test != true);
         return i_1;
     }
 
-    private int setIndexi_3(double[] a_i, int i_1, int i_2, int i_3, double delta){
-        if ((isDelatuseableForBounds(a_i[i_3], delta) == false) || (a_i[i_3] == 0.0)){
-            shiftIsPossible = false;
-            if ((Alli_1Index[i_3 - 1] == false) && (Alli_2Index[i_3 - 1] == false)){
-                if ((i_3 - 1 != i_1) && (i_3 - 1 != i_2)){
+    private int setIndexi_3(double[] a_i, int i_3, double delta){
+        boolean test;
+        do {
+            test = true;
+            if ((isDelatuseableForBounds(a_i[i_3], delta) == false) || (a_i[i_3] == 0.0)){
+                shiftIsPossible = false;
+                test = false;
+                if ((Alli_1Index[i_3 - 1] == false) && (Alli_2Index[i_3 - 1] == false)){
                     i_3--;
                     shiftIsPossible = true;
+                } else if ((Alli_1Index[i_3 - 1] == true) || (Alli_2Index[i_3 - 1] == true)) {
+                    shiftIsPossible = false;
+                    return i_3;
                 }
             }
-        }
+        }while (test != true);
         return i_3;
     }
 
     private void InitArraysToShift(int n){
         Alli_1Index = new boolean[n];
-        i_1Index = 0;
         Alli_2Index = new boolean[n];
-        i_2Index = 0;
         Alli_3Index = new boolean[n];
-        i_3Index = 0;
     }
 
     private void setArraysToShift(int i_1, int i_2, int i_3){
@@ -143,6 +181,7 @@ public class Transformation {
         if (interwallValidation(i_1, i_2, i_3)){
             do{
                 shiftIsPossible = true;
+                //TODO: prüfe ob z_ij > 0.0 wenn nicht nächste index
                 double temp_ai = z_ij[i_1][j] - (delta*((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3])));
                 if (z_ij[i_1][j] <= 0.0 || temp_ai < 0.0){
                     shiftIsPossible = false;
@@ -153,7 +192,7 @@ public class Transformation {
                     shiftIsPossible = false;
                     i_3--;
                 }
-            }while (shiftIsPossible != true);
+            }while ((shiftIsPossible != true) || (i_1 == i_3));
         }
         if (interwallValidation(i_1, i_2, i_3) == false){
             shiftIsPossible = false;

@@ -62,12 +62,8 @@ public class MatrixOperations {
             return false;
         }
     }
-    //TODO: es muss noch abgesichert und validate werden
-    /*
-    TODO:1)if i_1 oder i_3 null und kann zum weiteren springen dann macht, sonst ende
-    TODO:2)if 1 in Zeile ereicht dann nächste Element mit dem Index oder vorherige wenn möglich, sonst ende
-    TODO:3)Wenn keine weiter Verfahren möglich, dann return a_i
-     */
+
+
     private double[] shift(int n, double[][] z_ij, int j, int[] x_i, int i_1, int i_3, double delta, int i_2) throws Exception {
         double[] a_i = new double[n];
         if (interwallValidation(i_1, i_2, i_3)){
