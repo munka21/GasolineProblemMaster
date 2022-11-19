@@ -77,9 +77,7 @@ public class JobsGeneration {
 
     public void printJobs (int JobsList[]){
         int length = JobsList.length;
-        int checkSum = 0;
         for (int index = 0; index < length; index++){
-            checkSum = checkSum + JobsList[index];
             if (index == 0){
                 System.out.print("[" + JobsList[index]);
             }
@@ -90,6 +88,5 @@ public class JobsGeneration {
                 System.out.print("," + JobsList[index]);
             }
         }
-        System.out.print(" Sum: " + checkSum + "\n");
     }
 }

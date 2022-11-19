@@ -1,7 +1,5 @@
-import InstanceGenerator.*;
-import ModelG.*;
 import gurobi.*;
-import Greedy.*;
+import Tests.*;
 
 
 public class Main {
@@ -10,6 +8,9 @@ public class Main {
     static int maxSumOfJobs = 300;
     static int maxSizeOfOneJob = 50;
     public static void main(String[] args) throws GRBException {
+         TestMain test = new TestMain();
+         test.testClassForJobsGeneration();
+/*
         JobsGeneration jobsGenerator = new JobsGeneration();
         GreedyAlgo greedy = new GreedyAlgo();
         ModelGurobi model = new ModelGurobi();
@@ -44,12 +45,13 @@ public class Main {
         //*****************************
 
 */
+        /*
         z_j = shift.generateFractionalValues(z_ij, x_i, numberOfJobs);
         int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
         greedy.printOutput(R, numberOfJobs);
 
         shift.shift(numberOfJobs, z_ij, j, i_1, i_2, i_3, delta, x_i );
-
+*/
 
     }
 
