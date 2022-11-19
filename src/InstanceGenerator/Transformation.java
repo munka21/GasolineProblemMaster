@@ -179,24 +179,46 @@ public class Transformation {
 
     private void isBeforShiftValid(double[][] z_ij, int j, int i_1, int i_2, int i_3, double delta, int[] x_i){
         if (interwallValidation(i_1, i_2, i_3)){
-            do{
-                shiftIsPossible = true;
-                //TODO: prüfe ob z_ij > 0.0 wenn nicht nächste index
-                double temp_ai = z_ij[i_1][j] - (delta*((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3])));
-                if (z_ij[i_1][j] <= 0.0 || temp_ai < 0.0){
-                    shiftIsPossible = false;
-                    i_1++;
-                }
-                temp_ai = z_ij[i_3][j] -(delta*((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3])));
-                if (z_ij[i_3][j] <= 0.0 || (temp_ai < 0.0)){
-                    shiftIsPossible = false;
-                    i_3--;
-                }
-            }while ((shiftIsPossible != true) || (i_1 == i_3));
-        }
-        if (interwallValidation(i_1, i_2, i_3) == false){
             shiftIsPossible = false;
+            return;
         }
+        do{
+            shiftIsPossible = true;
+            //Set temp_ai
+            double temp_ai1;
+            double temp_ai3;
+            if (x_i[i_1] == x_i[i_3]){
+                temp_ai1 = z_ij[i_1][j] - delta;
+                temp_ai3 = z_ij[i_3][j];
+            }
+            else {
+                temp_ai1 = z_ij[i_1][j] - (delta*((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3])));
+                temp_ai3 = z_ij[i_3][j] - (delta*((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3])));
+            }
+
+            //set i_1, i_3 and marker shidtIsPossible
+            if (z_ij[i_1][j] <= 0.0 || temp_ai1 < 0.0){
+                shiftIsPossible = false;
+                i_1++;
+            }
+
+            if (z_ij[i_3][j] <= 0.0 || (temp_ai3 < 0.0)){
+                shiftIsPossible = false;
+                i_3--;
+            }
+
+        }while ((shiftIsPossible != true) || (i_1 == i_2) || (i_1 == i_3) || (i_2 == i_3));
     }
+
+    public double[] generateFractionalValues(double[][] z_ij, int[] x_i , int n){
+        double[] z_j = new double[n];
+        for (int j = 0; j < n; j++){
+            for (int i = 0; i <n; i++){
+                z_j[i] = z_j[i] + (z_ij[i][j] * x_i[i]);
+            }
+        }
+        return z_j;
+    }
+
 
 }
