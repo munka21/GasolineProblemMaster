@@ -88,5 +88,6 @@ public class JobsGeneration {
                 System.out.print("," + JobsList[index]);
             }
         }
+        System.out.print("\n");
     }
 }

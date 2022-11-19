@@ -28,7 +28,7 @@ public class TestJobsGeneration {
         }
     }
 
-    private int checkSumOfJobs (int test_numberOfJobs, int test_maxSizeOfOneJob, int test_maxSumOfJobs){
+    protected int checkSumOfJobs (int test_numberOfJobs, int test_maxSizeOfOneJob, int test_maxSumOfJobs){
         int test_size = (test_numberOfJobs * test_maxSizeOfOneJob) - test_maxSumOfJobs;
         if ((test_size <= 150) && (test_maxSumOfJobs - 150) > 0){
             test_maxSumOfJobs = test_maxSumOfJobs - 150;
