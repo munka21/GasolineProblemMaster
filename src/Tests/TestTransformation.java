@@ -28,8 +28,8 @@ public class TestTransformation {
         int y_i[] = jobsGenerator.nGenerator(test_maxSizeOfOneJob, test_numberOfJobs, test_maxSumOfJobs,false);
         int x_i[] = jobsGenerator.nGenerator(test_maxSizeOfOneJob, test_numberOfJobs, test_maxSumOfJobs,true);
         double[][] z_ij = model.solveLP(test_numberOfJobs, x_i, y_i);
+        z_ij = roundMatrix(z_ij, test_numberOfJobs);
         testPrintMatrix(z_ij);
-        //TODO:Aufrunden
         System.out.println("Matrix is successful generated");
         return z_ij;
     }
@@ -39,7 +39,21 @@ public class TestTransformation {
         for (int i = 0; i < n; i++){
             System.out.println(Arrays.toString(z_ij[i]));
         }
+    }
 
+    public double[][] roundMatrix(double[][] z_ij, int n){
+        double s = Math.pow(10, 3);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                z_ij[i][j] = Math.round(z_ij[i][j] * s) / s;
+            }
+        }
+        return z_ij;
+    }
+
+    public static double round(double val, int sca) {
+        double s = Math.pow(10, sca);
+        return Math.round(val * s) / s;
     }
 
 }

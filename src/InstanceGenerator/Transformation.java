@@ -13,15 +13,29 @@ public class Transformation {
     boolean[] Alli_2Index;
     boolean[] Alli_3Index;
 
+
     public double[][] transform(int n, double[][] z_ij, int j, int i_1, int i_2, int i_3){
+        /*
+        In Shift es kann sein, dass mehre i_2 genztzt wurde, soll dann es für jede gemacht werden?
+         */
         double[][] z_prime = new double[n][n];
         return z_prime;
     }
 
+    public double[][] swapColumn(double[][] z_ij, double[] a_i, int j, int n){
+        for (int i = 0; i < n; i++){
+            z_ij[i][j] = a_i[i];
+        }
+        return z_ij;
+    }
+
     public double[] shift(int n, double[][] z_ij, int j, int i_1, int i_2, int i_3, double delta, int[] x_i){
-        //TODO: es muss noch gepröft werden ob z_ij > 0 ist, wenn nicht such weiter nach passenden
         double[] a_i = new double[n];
         isBeforShiftValid(z_ij, j, i_1, i_2, i_3, delta, x_i);
+        double sum = calculateSumBeforShift(z_ij, i_2, j);
+        if (checkSum(sum, delta) == false){
+            shiftIsPossible = false;
+        }
         //For alle außer i_1, i_2, i_3
         if (shiftIsPossible){
             for (int i = 0; i < n; i++){
@@ -30,7 +44,6 @@ public class Transformation {
                 }
             }
         }
-        //TODO: prüfe noch erste a_i_w ob nicht größer 1 mit erste delta
         //dann a_i ist einfach die Spalte in z_ij
         if (shiftIsPossible == false){
             for (int i = 0; i < n; i++){
@@ -41,18 +54,24 @@ public class Transformation {
         InitArraysToShift(n);
         boolean firstRun = true;
 
+
+        //TODO:marker wird nicht gändert
         while (shiftIsPossible){
             setArraysToShift(i_1, i_2, i_3);
-            //TODO: Ask: Sollte immer in neue Saplte j bzw in Array a_i immer die Summe gleich 1 sein oder max 1? soll ich es immer prüfen?
+
+            //TODO immer z_ij swap muss noch gemacht werden damit es funktionier, sonst machen wir immer das selbe :(
             a_i[i_2] = z_ij[i_2][j] + delta;
             if ((firstRun == true) && (x_i[i_1] == x_i[i_3])){
                 a_i[i_1] = z_ij[i_1][j] - delta;
                 a_i[i_3] = z_ij[i_3][j];
             } else if (x_i[i_1] != x_i[i_3]) {
+                //TODO: alles ist int ==>> entweder 0 oder 1 ==>> Konwentieren zu Double
                 a_i[i_1] = z_ij[i_1][j] - (delta*((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3])));
                 a_i[i_3] = z_ij[i_3][j] -(delta*((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3])));
             }
+
             firstRun = false;
+            //TODO: macht es als globale Variablen und ändert int auf void, es kann vielleicht funktioniert, er geht in set i_1 und i_3 nicht reinv
             i_1 = setIndexi_1(a_i, i_1, delta);
             i_3 = setIndexi_3(a_i, i_3, delta);
             i_2 = setIndexi_2(a_i, i_2, delta, j, z_ij);
@@ -60,16 +79,17 @@ public class Transformation {
         return a_i;
     }
 
+
     private int setIndexi_2(double[] a_i, int i_2, double delta, int j, double[][] z_ij){
         double sum = calculateSum(a_i, z_ij, i_2, j);
-        if (checSum(sum, delta) == false){
+        if (checkSum(sum, delta) == false){
             shiftIsPossible = false;
             int temp_i_2 = i_2;
             while (true) {
                 temp_i_2--;
                 if(Alli_1Index[temp_i_2] == false){
                     sum = calculateSum(a_i, z_ij, temp_i_2, j);
-                    if (checSum(sum, delta) == true){
+                    if (checkSum(sum, delta) == true){
                         shiftIsPossible = true;
                         return temp_i_2;
                     }
@@ -83,7 +103,7 @@ public class Transformation {
                 temp_i_2++;
                 if (Alli_3Index[temp_i_2] == false){
                     sum = calculateSum(a_i, z_ij, temp_i_2, j);
-                    if (checSum(sum, delta) == true){
+                    if (checkSum(sum, delta) == true){
                         shiftIsPossible = true;
                         return temp_i_2;
                     }
@@ -96,11 +116,19 @@ public class Transformation {
         return i_2;
     }
 
-    private boolean checSum(double sum, double delta){
+    private boolean checkSum(double sum, double delta){
         if ((sum >= 1.0) || (sum + delta > 1.0)){
             return false;
         }
         return true;
+    }
+
+    private double calculateSumBeforShift(double[][] z_ij, int index, int j){
+        double sum = 0.0;
+        for (int index_j = 0; index_j < j; index_j++){
+            sum = sum + z_ij[index][j];
+        }
+        return sum;
     }
 
     private double calculateSum(double[] a_i, double[][] z_ij, int index, int j){
@@ -178,11 +206,11 @@ public class Transformation {
     }
 
     private void isBeforShiftValid(double[][] z_ij, int j, int i_1, int i_2, int i_3, double delta, int[] x_i){
-        if (interwallValidation(i_1, i_2, i_3)){
+        if (interwallValidation(i_1, i_2, i_3) == false){
             shiftIsPossible = false;
             return;
         }
-        do{
+        while(true){
             shiftIsPossible = true;
             //Set temp_ai
             double temp_ai1;
@@ -207,7 +235,16 @@ public class Transformation {
                 i_3--;
             }
 
-        }while ((shiftIsPossible != true) || (i_1 == i_2) || (i_1 == i_3) || (i_2 == i_3));
+            if (shiftIsPossible){
+                return;
+            }
+
+            if ((i_1 == i_2) || (i_1 == i_3) || (i_2 == i_3)){
+                shiftIsPossible = false;
+                return;
+            }
+
+        }
     }
 
     public double[] generateFractionalValues(double[][] z_ij, int[] x_i , int n){

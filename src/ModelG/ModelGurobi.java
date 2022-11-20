@@ -93,11 +93,9 @@ public class ModelGurobi {
             }
             //System.out.println(Arrays.toString(Output[i]));
         }
-
         // Dispose of model and environment
         model.dispose();
         env.dispose();
-
         return Output;
     }
 
