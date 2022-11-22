@@ -1,7 +1,6 @@
 package Tests;
 /*
-In weiteren Teil wird hier Test von meine Greedy Algo implementiert, bis
-dahin wird die Class erstmal leer
+It will be a test class for Greedy Algo
  */
 
 public class TestGreedyAlgo {

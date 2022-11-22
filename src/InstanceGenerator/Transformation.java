@@ -71,6 +71,7 @@ public class Transformation {
         double[] a_i = new double[n];
         double[] double_x_i = intArrayToDouble(x_i);
         isBeforShiftValid(z_ij, j, delta, double_x_i);
+        isIndex_i2_BeforeShiftValid(z_ij, j, delta);
         double sum = calculateSumBeforShift(z_ij, i_2, j);
         if (checkSum(sum, delta) == false){
             shiftIsPossible = false;
@@ -141,29 +142,34 @@ public class Transformation {
         double sumForIndex_i2 = isSumForIndex_i2(z_ij, i_2, j);
         if (checkSum(sumForIndex_i2, delta) == false){
             shiftIsPossible = false;
+             int temp_i2 = i_2;
             while (true) {
-                i_2--;
-                if(Alli_1Index[i_2] == false){
-                    sumForIndex_i2 = isSumForIndex_i2(z_ij, i_2, j);
+                temp_i2--;
+                //TODO: tem_i größer als bound oder negativ, nur wenn neue Funktion ???
+                if(Alli_1Index[temp_i2] == false){
+                    sumForIndex_i2 = isSumForIndex_i2(z_ij, temp_i2, j);
                     if (checkSum(sumForIndex_i2, delta)){
                         shiftIsPossible = true;
+                        i_2 = temp_i2;
                         return;
                     }
                 }
-                if (Alli_1Index[i_2] == true){
+                if (Alli_1Index[temp_i2] == true){
                     break;
                 }
             }
+            temp_i2 = i_2;
             while (true){
-                i_2++;
-                if (Alli_3Index[i_2] == false){
-                    sumForIndex_i2 = isSumForIndex_i2(z_ij, i_2, j);
+                temp_i2++;
+                if (Alli_3Index[temp_i2] == false){
+                    sumForIndex_i2 = isSumForIndex_i2(z_ij, temp_i2, j);
                     if (checkSum(sumForIndex_i2, delta)){
                         shiftIsPossible = true;
+                        i_2 = temp_i2;
                         return;
                     }
                 }
-                if (Alli_3Index[i_2] == true){
+                if (Alli_3Index[temp_i2] == true){
                     break;
                 }
             }
@@ -250,13 +256,49 @@ public class Transformation {
         return true;
     }
 
+    private void isIndex_i2_BeforeShiftValid(double[][] z_ij, int j, double delta){
+        //TODO: es macht alle ungültig
+        if (isSumForIndex_i2BeforShiftSmallerAsOne(z_ij, i_2, j, delta) == false){
+            int temp_i2 = i_2;
+            shiftIsPossible = false;
+            while (true) {
+                temp_i2--;
+                if(temp_i2 != i_1){
+                    if (isSumForIndex_i2BeforShiftSmallerAsOne(z_ij, temp_i2, j, delta) == true){
+                        shiftIsPossible = true;
+                        i_2 = temp_i2;
+                        return;
+                    }
+                }
+                if (temp_i2 == i_1){
+                    break;
+                }
+            }
+            temp_i2 = i_2;
+            while (true){
+                temp_i2++;
+                if (temp_i2 != i_3){
+                    if (isSumForIndex_i2BeforShiftSmallerAsOne(z_ij, temp_i2, j, delta) == true){
+                        shiftIsPossible = true;
+                        i_2 = temp_i2;
+                        return;
+                    }
+                }
+                if (temp_i2 == i_3){
+                    break;
+                }
+            }
+        }
+    }
+
+
+
     private void isBeforShiftValid(double[][] z_ij, int j, double delta, double[] x_i){
         //TODO: suche neue i_2 hier um zu überprüfen am besten neue Funktion
-        if ((interwallValidation() == false) || (isSumForIndex_i2BeforShiftSmallerAsOne(z_ij, i_2, j, delta) == false)){
+        if (interwallValidation() == false){
             shiftIsPossible = false;
             return;
         }
-
         while(true){
             shiftIsPossible = true;
             double temp_ai1;
