@@ -77,6 +77,7 @@ public class Transformation {
         }
         //For alle außer i_1, i_2, i_3
         //TODO:Frag ob es für alle i_1, i_2 und i_3 richtig ist
+        /*
         if (shiftIsPossible){
             for (int i = 0; i < n; i++){
                 if ((i != i_1) && (i != i_2) && (i != i_3)){
@@ -84,6 +85,7 @@ public class Transformation {
                 }
             }
         }
+        */
         //dann a_i ist einfach die Spalte in z_ij
         //TODO: wenn return z_ij, dann man kann es löschen
         if (shiftIsPossible == false){
@@ -100,7 +102,7 @@ public class Transformation {
                 a_i[i_3] = z_ij[i_3][j];
             } else{
                 a_i[i_1] = z_ij[i_1][j] - (delta*((double_x_i[i_2]-double_x_i[i_3])/(double_x_i[i_1]-double_x_i[i_3])));
-                a_i[i_3] = z_ij[i_3][j] -(delta*((double_x_i[i_1]-double_x_i[i_2])/(double_x_i[i_1]-double_x_i[i_3])));
+                a_i[i_3] = z_ij[i_3][j] - (delta*((double_x_i[i_1]-double_x_i[i_2])/(double_x_i[i_1]-double_x_i[i_3])));
             }
             z_ij = swapColumn(z_ij, a_i, j, n);
             firstRun = false;
@@ -108,20 +110,42 @@ public class Transformation {
             setIndexi_3(a_i, delta);
             setIndexi_2(a_i, delta, j, z_ij);
         }
+        //TODO: check ob es funkiniert
+        a_i = setRestIndexes_ai(a_i, z_ij, j, n);
+        z_ij = swapColumn(z_ij, a_i, j, n);
         //return a_i;
         return z_ij;
     }
 
+    private double[] setRestIndexes_ai(double[] a_i, double[][] z_ij, int j, int n){
+        if (shiftIsPossible){
+            for (int i = 0; i < n; i++){
+                if ((Alli_1Index[i] == false) && (Alli_2Index[i] == false) && (Alli_3Index[i] == false)){
+                    a_i[i] = z_ij[i][j];
+                }
+            }
+        }
+        return a_i;
+    }
+
+    private double isSumForIndex_i2(double[][] z_ij, int i_2, int j){
+        double sum = 0.0;
+        for (int i = 0; i <= i_2; i++){
+            sum = sum + z_ij[i][j];
+        }
+        return sum;
+    }
+
 
     private void setIndexi_2(double[] a_i, double delta, int j, double[][] z_ij){
-        double sum = calculateSum(a_i, z_ij, i_2, j);
-        if (checkSum(sum, delta) == false){
+        double sumForIndex_i2 = isSumForIndex_i2(z_ij, i_2, j);
+        if (checkSum(sumForIndex_i2, delta) == false){
             shiftIsPossible = false;
             while (true) {
                 i_2--;
                 if(Alli_1Index[i_2] == false){
-                    sum = calculateSum(a_i, z_ij, i_2, j);
-                    if (checkSum(sum, delta) == true){
+                    sumForIndex_i2 = isSumForIndex_i2(z_ij, i_2, j);
+                    if (checkSum(sumForIndex_i2, delta)){
                         shiftIsPossible = true;
                         return;
                     }
@@ -133,8 +157,8 @@ public class Transformation {
             while (true){
                 i_2++;
                 if (Alli_3Index[i_2] == false){
-                    sum = calculateSum(a_i, z_ij, i_2, j);
-                    if (checkSum(sum, delta) == true){
+                    sumForIndex_i2 = isSumForIndex_i2(z_ij, i_2, j);
+                    if (checkSum(sumForIndex_i2, delta)){
                         shiftIsPossible = true;
                         return;
                     }
@@ -159,15 +183,6 @@ public class Transformation {
         for (int index_j = 0; index_j < j; index_j++){
             sum = sum + z_ij[index][j];
         }
-        return sum;
-    }
-
-    private double calculateSum(double[] a_i, double[][] z_ij, int index, int j){
-        double sum = 0.0;
-        for (int index_j = 0; index_j < j-1; index_j++){
-            sum = sum + z_ij[index][j];
-        }
-        sum = sum + a_i[index];
         return sum;
     }
 
@@ -224,11 +239,24 @@ public class Transformation {
         return false;
     }
 
+    private boolean isSumForIndex_i2BeforShiftSmallerAsOne(double[][] z_ij, int i_2, int j, double delta){
+        double sum = 0.0;
+        for (int i = 0; i <= j; i++){
+            sum = sum + z_ij[i_2][i];
+            if ((sum >= 1.0) || (sum + delta > 1.0)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void isBeforShiftValid(double[][] z_ij, int j, double delta, double[] x_i){
-        if (interwallValidation() == false){
+        //TODO: suche neue i_2 hier um zu überprüfen am besten neue Funktion
+        if ((interwallValidation() == false) || (isSumForIndex_i2BeforShiftSmallerAsOne(z_ij, i_2, j, delta) == false)){
             shiftIsPossible = false;
             return;
         }
+
         while(true){
             shiftIsPossible = true;
             double temp_ai1;

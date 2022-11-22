@@ -48,28 +48,21 @@ public class Main {
 
             //int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
             //greedy.printOutput(R, numberOfJobs);
-/*
-        z_ij = new double[][]{
-                {0.2, 0.1, 0.4, 0.3},
-                {0.0, 0.3, 0.2, 0.5},
-                {0.3, 0.4, 0.2, 0.1},
-                {0.5, 0.2, 0.2, 0.1}
-        };
-*/
+
             //z_j = shift.generateFractionalValues(z_ij, x_i, numberOfJobs);
             //double[] a_i = shift.shift(numberOfJobs, z_ij, j, i_1, i_2, i_3, delta, x_i);
-            //System.out.println(Arrays.toString(a_i) + "\n");//TODO: löschen wenn fertig
             System.out.println("Print Vor Transofmation");
-            testPrintMatrix(z_ij);
+            testPrintMatrix(z_ij);//TODO: löschen wenn fertig
             z_ij = shift.shift(numberOfJobs, z_ij, j, i_1, i_2, i_3, delta, x_i);
             //z_ij = shift.swapColumn(z_ij, a_i, j, numberOfJobs);
-            System.out.println("\n New \n");
-            System.out.println("Print After Transofmation");
+            System.out.println("\n New \n");//TODO: löschen wenn fertig
+            System.out.println("Print After Transofmation");//TODO: löschen wenn fertig
             testPrintMatrix(z_ij);
         }
 
     }
 
+    //TODO: löschen wenn fertig
     public static void testPrintMatrix(double[][] z_ij){
         int n = z_ij.length;
         for (int i = 0; i < n; i++){
