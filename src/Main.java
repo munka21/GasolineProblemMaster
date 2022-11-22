@@ -14,7 +14,10 @@ public class Main {
     static int maxSumOfJobs = 35;
     static int maxSizeOfOneJob = 10;
     public static void main(String[] args) throws GRBException {
-         TestMain test = new TestMain();
+        /*
+        In der Zukunft werden hier zu erst Tests durchgeführt
+         */
+        //TestMain test = new TestMain();
          //test.testClassForJobsGeneration();
         //test.testClassTransformation();
 
@@ -28,22 +31,23 @@ public class Main {
         double[][] z_ij;
         double[] z_j;
 
-        double delta = 0.1;
+        double delta = 0.01;
         int i_1 = 0;
         int i_2 = 2;
         int i_3 = 4;
-        int j = 1;
+        int j = 2;
 
-        y_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs,false);
-        x_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs,true);
+        while (true) {
+            y_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs, false);
+            x_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs, true);
 
-        jobsGenerator.printJobs(y_i);//Verstecken
-        jobsGenerator.printJobs(x_i);//Verstecken
+            jobsGenerator.printJobs(y_i);//Verstecken
+            jobsGenerator.printJobs(x_i);//Verstecken
 
-        z_ij = model.solveLP(numberOfJobs, x_i, y_i);
+            z_ij = model.solveLP(numberOfJobs, x_i, y_i);
 
-        //int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
-        //greedy.printOutput(R, numberOfJobs);
+            //int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
+            //greedy.printOutput(R, numberOfJobs);
 /*
         z_ij = new double[][]{
                 {0.2, 0.1, 0.4, 0.3},
@@ -52,13 +56,17 @@ public class Main {
                 {0.5, 0.2, 0.2, 0.1}
         };
 */
-        //z_j = shift.generateFractionalValues(z_ij, x_i, numberOfJobs);
-        double[] a_i = shift.shift(numberOfJobs, z_ij, j, i_1, i_2, i_3, delta, x_i );
-        System.out.println(Arrays.toString(a_i) + "\n");//TODO: löschen wenn fertig
-        testPrintMatrix(z_ij);
-        shift.swapColumn(z_ij, a_i, j, numberOfJobs);
-        System.out.println("\n New \n");
-        testPrintMatrix(z_ij);
+            //z_j = shift.generateFractionalValues(z_ij, x_i, numberOfJobs);
+            //double[] a_i = shift.shift(numberOfJobs, z_ij, j, i_1, i_2, i_3, delta, x_i);
+            //System.out.println(Arrays.toString(a_i) + "\n");//TODO: löschen wenn fertig
+            System.out.println("Print Vor Transofmation");
+            testPrintMatrix(z_ij);
+            z_ij = shift.shift(numberOfJobs, z_ij, j, i_1, i_2, i_3, delta, x_i);
+            //z_ij = shift.swapColumn(z_ij, a_i, j, numberOfJobs);
+            System.out.println("\n New \n");
+            System.out.println("Print After Transofmation");
+            testPrintMatrix(z_ij);
+        }
 
     }
 
