@@ -1,5 +1,9 @@
 package InstanceGenerator;
 
+import java.util.Arrays;
+
+//TODO: Teste weiter
+
 public class Shift {
 
     int i_1;
@@ -9,16 +13,34 @@ public class Shift {
     boolean isShiftPossible;
 
     public double[][] doShift(double[][] z_ij, int j, int[] int_xi){
+        System.out.println("Vor Shift");//TODO: Löschen
+        testPrintMatrix(z_ij);//TODO: Löschen
         double[] x_i = intArrayToDouble(int_xi);
-        do{
+        do{//TODO: do_while to While
             lookForIndexAndSet(z_ij, j);
-            setDelta(z_ij, j, x_i);
-            z_ij = useFormel(z_ij, x_i);
-        }while (isShiftPossible == true);
+            if (isShiftPossible == true){
+                setDelta(z_ij, j, x_i);
+                z_ij = useFormel(z_ij, x_i, j);
+                System.out.println("After Shift");//TODO: Löschen
+                testPrintMatrix(z_ij);//TODO: Löschen
+                continue;
+            }
+            break;
+        }while (true);
         return z_ij;
     }
 
-    private double[][] useFormel (double[][] z_ij, double[] x_i){
+    private double[][] useFormel (double[][] z_ij, double[] x_i, int j){
+        double y_i1 = ((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3]));
+        double y_i3 = ((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3]));
+        z_ij[i_2][j] = z_ij[i_2][j] + delta;
+        if (x_i[i_1] == x_i[i_3]){
+            z_ij[i_1][j] = z_ij[i_1][j] - delta;
+            z_ij[i_3][j] = z_ij[i_3][j];
+        } else{
+            z_ij[i_1][j] = z_ij[i_1][j] - (delta * y_i1);
+            z_ij[i_3][j] = z_ij[i_3][j] - (delta * y_i3);
+        }
         return z_ij;
     }
 
@@ -31,6 +53,7 @@ public class Shift {
         double maxDelta_i2 = 1.0 - sum_i2;
         delta = Math.min(maxDelta_i1, maxDelta_i3);
         delta = Math.min(delta, maxDelta_i2);
+        System.out.println("\nDelta:" + delta + "\n");
     }
 
     private void lookForIndexAndSet(double[][] z_ij, int j){
@@ -99,6 +122,13 @@ public class Shift {
             double_x_i[i] = x_i[i];
         }
         return double_x_i;
+    }
+
+    private static void testPrintMatrix(double[][] z_ij){
+        int n = z_ij.length;
+        for (int i = 0; i < n; i++){
+            System.out.println(Arrays.toString(z_ij[i]));
+        }
     }
 
 }
