@@ -1,9 +1,8 @@
 import Greedy.GreedyAlgo;
 import InstanceGenerator.JobsGeneration;
-import InstanceGenerator.Transformation;
+import InstanceGenerator.PrototypingTransformation;
 import ModelG.ModelGurobi;
 import gurobi.*;
-import Tests.*;
 
 import java.util.Arrays;
 
@@ -24,7 +23,7 @@ public class Main {
         JobsGeneration jobsGenerator = new JobsGeneration();
         GreedyAlgo greedy = new GreedyAlgo();
         ModelGurobi model = new ModelGurobi();
-        Transformation shift = new Transformation();
+        PrototypingTransformation shift = new PrototypingTransformation();
 
         int y_i[];
         int x_i[];

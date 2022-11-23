@@ -1,9 +1,8 @@
 package InstanceGenerator;
 
-//TODO: teste alle Funktionen :(
-//TODO: Fehler Behandlung
+//TODO: LÖSCHEN
 
-public class Transformation {
+public class PrototypingTransformation {
     /*
     i_1, j kann auch 0 sein, unsere Matrix ist von 0 nummeriert,
     also wenn wenn i_1 ist 1, das ist also zweite Zeile in Matrix.
