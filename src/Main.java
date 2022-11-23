@@ -49,6 +49,9 @@ public class Main {
             //greedy.printOutput(R, numberOfJobs);
 
             //z_j = shift.generateFractionalValues(z_ij, x_i, numberOfJobs);
+
+            /*
+            TODO: Löschen
             //double[] a_i = shift.shift(numberOfJobs, z_ij, j, i_1, i_2, i_3, delta, x_i);
             System.out.println("Print Vor Transofmation");
             testPrintMatrix(z_ij);//TODO: löschen wenn fertig
@@ -57,6 +60,10 @@ public class Main {
             System.out.println("\n New \n");//TODO: löschen wenn fertig
             System.out.println("Print After Transofmation");//TODO: löschen wenn fertig
             testPrintMatrix(z_ij);
+             */
+            int n = 10;
+            double[] xx =  new double[n];
+            System.out.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" + xx[n]);
         }
 
     }
