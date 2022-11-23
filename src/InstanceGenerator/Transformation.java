@@ -71,7 +71,9 @@ public class Transformation {
         double[] a_i = new double[n];
         double[] double_x_i = intArrayToDouble(x_i);
         isBeforShiftValid(z_ij, j, delta, double_x_i);
-        isIndex_i2_BeforeShiftValid(z_ij, j, delta);
+        if (shiftIsPossible == true){
+            isIndex_i2_BeforeShiftValid(z_ij, j, delta);
+        }
         double sum = calculateSumBeforShift(z_ij, i_2, j);
         if (checkSum(sum, delta) == false){
             shiftIsPossible = false;
@@ -265,6 +267,7 @@ public class Transformation {
                 temp_i2--;
                 if(temp_i2 != i_1){
                     if (isSumForIndex_i2BeforShiftSmallerAsOne(z_ij, temp_i2, j, delta) == true){
+                        //TODO: is es nich bereit i_1 oder i_3
                         shiftIsPossible = true;
                         i_2 = temp_i2;
                         return;
@@ -320,14 +323,13 @@ public class Transformation {
                 shiftIsPossible = false;
                 i_3--;
             }
-            if (shiftIsPossible){
-                return;
-            }
             if ((i_1 == i_2) || (i_1 == i_3) || (i_2 == i_3)){
                 shiftIsPossible = false;
                 return;
             }
-
+            if (shiftIsPossible){
+                return;
+            }
         }
     }
 

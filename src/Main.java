@@ -35,7 +35,7 @@ public class Main {
         int i_1 = 0;
         int i_2 = 2;
         int i_3 = 4;
-        int j = 2;
+        int j = 3;
 
         while (true) {
             y_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs, false);
