@@ -13,12 +13,6 @@ public class Main {
     static int maxSumOfJobs = 35;
     static int maxSizeOfOneJob = 10;
     public static void main(String[] args) throws GRBException {
-        /*
-        In der Zukunft werden hier zu erst Tests durchgeführt
-         */
-        //TestMain test = new TestMain();
-         //test.testClassForJobsGeneration();
-        //test.testClassTransformation();
 
         JobsGeneration jobsGenerator = new JobsGeneration();
         GreedyAlgo greedy = new GreedyAlgo();
@@ -34,26 +28,19 @@ public class Main {
         while (true) {
             y_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs, false);
             x_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs, true);
-
-            System.out.println("\n**********START***************\n");
-
             jobsGenerator.printJobs(y_i);//Verstecken
             jobsGenerator.printJobs(x_i);//Verstecken
-
             z_ij = model.solveLP(numberOfJobs, x_i, y_i);
 
             z_ij = shift.doShift(z_ij, j, x_i);
 
 
-            //int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
-            //greedy.printOutput(R, numberOfJobs);
+            int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
+            greedy.printOutput(R, numberOfJobs);
 
             //z_j = shift.generateFractionalValues(z_ij, x_i, numberOfJobs);
 
         }
 
     }
-
-    //TODO: löschen wenn fertig
-
 }

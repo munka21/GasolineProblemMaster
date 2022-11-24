@@ -1,8 +1,5 @@
 package InstanceGenerator;
-
 import java.util.Arrays;
-
-//TODO: Teste weiter
 
 public class Shift {
 
@@ -45,6 +42,12 @@ public class Shift {
     }
 
     private void setDelta(double[][] z_ij, int j, double[] x_i){
+        /*
+        Es ist ein Intelligent Wahl von Delta, wir bekommen immer das maximale Delta
+        so das entweder eine von Schranken (i_1, i_3) 0 wird oder i_2 maximal erhört
+        nur in einen Shift Lauf. Frag ob es so bleiben kann unb erklärt wie es
+        gemacht wurde.
+         */
         double y_i1 = ((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3]));
         double y_i3 = ((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3]));
         double sum_i2 = checkSumForIndex_i2(z_ij, j);
@@ -53,7 +56,7 @@ public class Shift {
         double maxDelta_i2 = 1.0 - sum_i2;
         delta = Math.min(maxDelta_i1, maxDelta_i3);
         delta = Math.min(delta, maxDelta_i2);
-        System.out.println("\nDelta:" + delta + "\n");
+        System.out.println("\nDelta:" + delta + "\n");//TODO: Löschen
     }
 
     private void lookForIndexAndSet(double[][] z_ij, int j){

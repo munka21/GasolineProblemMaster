@@ -12,9 +12,4 @@ public class TestMain {
         test_jobsGeneration.testGenerator();
     }
 
-    public void testClassTransformation() throws GRBException {
-        TestTransformation OutputMatrix = new TestTransformation();
-        double[][] z_ij = OutputMatrix.generateMatrix();
-    }
-
 }
