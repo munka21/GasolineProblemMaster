@@ -4,12 +4,13 @@ import java.util.*;
 
 public class Transform extends Shift{
 
-    List IndexesGreaterThanOne = new ArrayList();
-    List IndexesSmallerThanOne = new ArrayList();
-    double[] z_j;
+    List<Integer> IndexesGreaterThanOne = new ArrayList<Integer>();
+    List<Integer> IndexesSmallerThanOne = new ArrayList<Integer>();
+
     int current_i1;
     int current_i2;
     int current_i3;
+    double[] z_j;
     int current_jPrime;
     double delta;
     boolean isShiftPossible;
@@ -18,72 +19,61 @@ public class Transform extends Shift{
         double[] x_i = intArrayToDouble(int_xi);
 
         calculateFractionalValuesAndSetsLists(z_ij);
-        setCurrent_i_jPrime(z_ij,j);//TODO:Nachdem Funktion man kann prüfen ob wir etwas drin haben, Fall nein abbrechen, so kann man unendliche Schleife brechen.
+        lookFor_jPrime(z_ij, j);
 
-        System.out.println("\nz_j:\n");
-        System.out.println(Arrays.toString(z_j));
-        System.out.println("\nIndexes Greater Than One:\n");
-        System.out.println(Arrays.toString(IndexesGreaterThanOne.toArray()));
-        System.out.println("\nIndexes Smaller Than One:\n");
-        System.out.println(Arrays.toString(IndexesSmallerThanOne.toArray()) + "\n");
-        System.out.println("current_i2 : " + current_i2 + " current_jPrime : " + current_jPrime);
-        System.out.println("\n*****************************\n");
-
-        setDelta();
+        setDelta(z_ij);
         z_ij = doShiftForTransform(z_ij);
-
         setList("clear", 0);
 
 
         return z_ij;
     }
 
-    /*
-        System.out.println("\nz_j:\n");
-        System.out.println(Arrays.toString(z_j));
-        System.out.println("\nIndexes Greater Than One:\n");
-        System.out.println(Arrays.toString(IndexesGreaterThanOne.toArray()));
-        System.out.println("\nIndexes Smaller Than One:\n");
-        System.out.println(Arrays.toString(IndexesSmallerThanOne.toArray()) + "\n");
-        System.out.println(Arrays.toString(setCurrent_i_jPrime(z_ij,j)));
-        System.out.println("\n*****************************\n");
-     */
+    private void lookForCurrent_i1(double[][] z_ij){
+        for (int ele: IndexesSmallerThanOne){
+            if (ele < current_i2){
+                current_i1 = ele;
+                IndexesSmallerThanOne.remove(ele);
+                return;
+            }
+        }
+    }
+
+    private void lookForCurrent_i3(double[][] z_ij){
+        for (int ele: IndexesSmallerThanOne){
+            if (ele > current_i2){
+                current_i3 = ele;
+                IndexesSmallerThanOne.remove(ele);
+                return;
+            }
+        }
+    }
+
+    private void lookFor_jPrime(double[][] z_ij, int j){
+        int n = z_ij.length;
+        current_i2 = IndexesGreaterThanOne.get(0);
+        IndexesGreaterThanOne.remove(0);
+        for (int j_prime = j + 1; j_prime < n; j_prime++){
+            if (z_ij[current_i2][j_prime] > 0.0000){
+                current_jPrime = j_prime;
+            }
+        }
+    }
 
     private double[][] doShiftForTransform(double[][] z_ij){
         return z_ij;
     }
 
-    private void setDelta(){
-        double toSubFrom_i2 = z_j[current_i2] - 1.0;//MaxDeltaFürZeile_i2
+    private void setDelta(double[][] z_ij){
+        /*TODO: du musst prüfen ob xi1 == xi3 ist, weil dann wurde, und wenn nur i1 oder i2 exist dann komplete
+           Delta zu diese i und die komplet von i, wenn mehre i erstmal lassen, also max was geht in den Fall zu
+           eine von diese i, und fall noch was übrig dann zu nächste i.
+           Dann haben wir useForm for meisten Fällen und separate für sonder Fälle.
+           Am besten set boolen varablen ob beiden indexen i1 und i3 sind vorhanden Falls ja, dann es ist normal
+           Fall falls nicht dann sonder Fall
+         */
     }
 
-    private double[][] useFormel (double[][] z_ij, double[] x_i, int j){
-        double y_i1 = ((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3]));
-        double y_i3 = ((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3]));
-        z_ij[i_2][j] = z_ij[i_2][j] - delta;
-        if (x_i[i_1] == x_i[i_3]){
-            z_ij[i_1][j] = z_ij[i_1][j] + delta;
-            z_ij[i_3][j] = z_ij[i_3][j];
-        } else{
-            z_ij[i_1][j] = z_ij[i_1][j] + (delta * y_i1);
-            z_ij[i_3][j] = z_ij[i_3][j] + (delta * y_i3);
-        }
-        return z_ij;
-    }
-    private void setCurrent_i_jPrime(double[][] z_ij, int j){
-        int n = z_ij.length;
-        for (int i = 0; i < n; i++){//TODO:check if out of bound
-            if (z_j[i] > 1.0){
-                for (int j_prime = j + 1; j_prime < n; j_prime++){
-                    if (z_ij[i][j_prime] > 0.00000000){
-                        current_i2 = i;
-                        current_jPrime = j_prime;
-                        return;
-                    }
-                }
-            }
-        }
-    }
 
     private void calculateFractionalValuesAndSetsLists(double[][] z_ij){
         int n = z_ij.length;
