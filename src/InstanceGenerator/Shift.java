@@ -2,7 +2,6 @@ package InstanceGenerator;
 import java.util.Arrays;
 
 public class Shift {
-
     int i_1;
     int i_2;
     int i_3;
@@ -11,15 +10,15 @@ public class Shift {
 
     public double[][] doShift(double[][] z_ij, int j, int[] int_xi){
         System.out.println("Vor Shift");//TODO: Löschen
-        testPrintMatrix(z_ij);//TODO: Löschen
+        testPrintMatrix2D(z_ij);//TODO: Löschen
         double[] x_i = intArrayToDouble(int_xi);
-        do{//TODO: do_while to While
+        do{
             lookForIndexAndSet(z_ij, j);
             if (isShiftPossible == true){
                 setDelta(z_ij, j, x_i);
                 z_ij = useFormel(z_ij, x_i, j);
                 System.out.println("After Shift");//TODO: Löschen
-                testPrintMatrix(z_ij);//TODO: Löschen
+                testPrintMatrix2D(z_ij);//TODO: Löschen
                 continue;
             }
             break;
@@ -118,7 +117,7 @@ public class Shift {
         }
     }
 
-    private double[] intArrayToDouble(int[] x_i){
+    protected double[] intArrayToDouble(int[] x_i){
         int l = x_i.length;
         double[] double_x_i = new double[l];
         for (int i = 0; i < l; i++){
@@ -127,7 +126,7 @@ public class Shift {
         return double_x_i;
     }
 
-    private static void testPrintMatrix(double[][] z_ij){
+    protected static void testPrintMatrix2D(double[][] z_ij){
         int n = z_ij.length;
         for (int i = 0; i < n; i++){
             System.out.println(Arrays.toString(z_ij[i]));
