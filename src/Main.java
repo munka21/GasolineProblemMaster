@@ -4,8 +4,6 @@ import InstanceGenerator.*;
 import ModelG.ModelGurobi;
 import gurobi.*;
 
-import java.util.Arrays;
-
 
 public class Main {
 
@@ -18,6 +16,7 @@ public class Main {
         GreedyAlgo greedy = new GreedyAlgo();
         ModelGurobi model = new ModelGurobi();
         Shift shift = new Shift();
+        Transform transform = new Transform();
 
         int y_i[];
         int x_i[];
@@ -31,12 +30,12 @@ public class Main {
             jobsGenerator.printJobs(y_i);//Verstecken
             jobsGenerator.printJobs(x_i);//Verstecken
             z_ij = model.solveLP(numberOfJobs, x_i, y_i);
-
             z_ij = shift.doShift(z_ij, j, x_i);
+            z_ij = transform.doTransform(z_ij, j, x_i);
 
 
-            int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
-            greedy.printOutput(R, numberOfJobs);
+            //int R[][] = greedy.solveProblem(numberOfJobs, x_i, y_i);
+            //greedy.printOutput(R, numberOfJobs);
 
             //z_j = shift.generateFractionalValues(z_ij, x_i, numberOfJobs);
 
