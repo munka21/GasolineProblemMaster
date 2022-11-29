@@ -15,25 +15,53 @@ public class Transform extends Shift{
     double delta;
     boolean isShiftPossible;
 
+
     public double[][] doTransform(double[][] z_ij, int j, int[] int_xi){
         double[] x_i = intArrayToDouble(int_xi);
 
         calculateFractionalValuesAndSetsLists(z_ij);
         lookFor_jPrime(z_ij, j);
 
-        setDelta(z_ij);
+        if (checkExistOf_i3(z_ij) && checkExistOf_i1(z_ij)){
+            setDelta(z_ij);
+        }
+        else if (checkExistOf_i1(z_ij) && checkExistOf_i3(z_ij) == false){
+            setDelta(z_ij);
+        }
+        else if (checkExistOf_i3(z_ij) && checkExistOf_i1(z_ij) == false) {
+            setDelta(z_ij);
+        }
+
         z_ij = doShiftForTransform(z_ij);
+
+
         setList("clear", 0);
-
-
         return z_ij;
+    }
+
+    private boolean checkExistOf_i1(double[][] z_ij){
+        for (int i : IndexesSmallerThanOne){
+            if (i < current_i2){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkExistOf_i3(double[][] z_ij){
+        for (int i : IndexesSmallerThanOne){
+            if (i > current_i2){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void lookForCurrent_i1(double[][] z_ij){
         for (int ele: IndexesSmallerThanOne){
             if (ele < current_i2){
                 current_i1 = ele;
-                IndexesSmallerThanOne.remove(ele);
+                IndexesSmallerThanOne.remove(ele);//TODO: nicht hier, sonder wenn er fertig ist mid diese i
                 return;
             }
         }
@@ -43,7 +71,7 @@ public class Transform extends Shift{
         for (int ele: IndexesSmallerThanOne){
             if (ele > current_i2){
                 current_i3 = ele;
-                IndexesSmallerThanOne.remove(ele);
+                IndexesSmallerThanOne.remove(ele);//TODO: nicht hier, sonder wenn er fertig ist mid diese i
                 return;
             }
         }
@@ -52,7 +80,7 @@ public class Transform extends Shift{
     private void lookFor_jPrime(double[][] z_ij, int j){
         int n = z_ij.length;
         current_i2 = IndexesGreaterThanOne.get(0);
-        IndexesGreaterThanOne.remove(0);
+        IndexesGreaterThanOne.remove(0);//TODO: nicht hier, sonder wenn er fertig ist mid diese i
         for (int j_prime = j + 1; j_prime < n; j_prime++){
             if (z_ij[current_i2][j_prime] > 0.0000){
                 current_jPrime = j_prime;
@@ -70,7 +98,7 @@ public class Transform extends Shift{
            eine von diese i, und fall noch was übrig dann zu nächste i.
            Dann haben wir useForm for meisten Fällen und separate für sonder Fälle.
            Am besten set boolen varablen ob beiden indexen i1 und i3 sind vorhanden Falls ja, dann es ist normal
-           Fall falls nicht dann sonder Fall
+           Fall falls nicht dann sonder Fall.
          */
     }
 
