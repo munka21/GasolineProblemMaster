@@ -46,6 +46,9 @@ public class Shift {
         so das entweder eine von Schranken (i_1, i_3) 0 wird oder i_2 maximal erhört
         nur in einen Shift Lauf. Frag ob es so bleiben kann unb erklärt wie es
         gemacht wurde.
+        ai = z_ij - (delta * yi) => weil es gleich 0 sein sollte, dann setzen wir ai = 0
+        (0 - z_ij)/yi = -delta
+        delta = z_ij/yi
          */
         double y_i1 = ((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3]));
         double y_i3 = ((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3]));
