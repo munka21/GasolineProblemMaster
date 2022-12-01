@@ -19,6 +19,12 @@ public class Shift {
                 z_ij = useFormel(z_ij, x_i, j);
                 System.out.println("After Shift");//TODO: Löschen
                 testPrintMatrix2D(z_ij);//TODO: Löschen
+                //TODO: transform hier nach jedem einzigen shift
+                /*
+                Wenn transform hier wird, dann haben wir direkt
+                i_1, i_2, i_3 und delta, mann mus nur transform
+                machen und j_prime finden und abziehen.
+                 */
                 continue;
             }
             break;

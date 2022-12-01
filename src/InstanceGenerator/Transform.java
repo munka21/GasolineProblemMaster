@@ -38,10 +38,11 @@ public class Transform extends Shift {
         }
         System.out.println("test_eine_true : " + test_eine_true);
         System.out.println("test_beide_true : " + test_beide_true);
-        if (((exits_i1) && (exits_i3 == false)) || ((exits_i3) && (exits_i1 == false))){
-            System.out.println("Es ist Hier\n");
-        }
-        else {
+        if (((exits_i3) && (exits_i1 == false))){
+            System.out.println("Es ist Hier 1\n");
+        } else if (((exits_i1) && (exits_i3 == false))) {
+            System.out.println("Es ist Hier 2\n");
+        } else {
             System.out.println("Es ist nicht hier\n");
         }
     }
@@ -73,19 +74,39 @@ public class Transform extends Shift {
                 break;
 
             } else if ((exits_i1 == false) && (exits_i3)) {
-                break;
+                /*
+                Wie oben geschrieben hier die alternative lösung
+                 */
+                setDeltaForOnly_i3(z_ij);
+                System.out.println("new Delta: " + delta);
+                z_ij = useFormelForOnly_i3(z_ij, x_i);
+                System.out.println("After Shift fot Transform");
+                testPrintMatrix2D(z_ij);
             }
-
-
         } while (check_zj() != true);
 
 
         return z_ij;
     }
 
+    private double[][] useFormelForOnly_i3(double[][] z_ij, double[] x_i){
+        double y_i3 = ((x_i[current_i1]-x_i[current_i2])/(x_i[current_i1]-x_i[current_i3]));
+        z_ij[current_i2][j_prime] = z_ij[current_i2][j_prime] - delta;
+        z_ij[current_i3][j_prime] = z_ij[current_i3][j_prime] + delta ;
+        return z_ij;
+    }
+
+    private void setDeltaForOnly_i3(double[][] z_ij){
+        double maxDelta_i3 = (1.0 - z_j[current_i3]);
+        double maxDelta_i2 = z_j[current_i2] - 1.0;//Erst wie viel in der Zeile müssen wir subtrahieren
+        maxDelta_i2 = Math.min(maxDelta_i2, z_ij[current_i2][j_prime]);//Prüfen, ob wir es direkt in diese Spalte geht
+        delta = Math.min(maxDelta_i3, maxDelta_i2);
+
+    }
+
     private boolean check_zj(){
         for (int i = 0; i < n; i++){
-            if ((round(z_j[i], 3) > 1.000) || ((round(z_j[i], 3) < 0.999))){
+            if ((round(z_j[i], 4) > 1.0000) || ((round(z_j[i], 4) < 0.9999))){
                 return false;
             }
         }
