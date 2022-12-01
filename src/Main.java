@@ -4,12 +4,14 @@ import InstanceGenerator.*;
 import ModelG.ModelGurobi;
 import gurobi.*;
 
+import static Tests.MatrixOp.*;
+
 
 public class Main {
 
     static int numberOfJobs = 5;
-    static int maxSumOfJobs = 35;
-    static int maxSizeOfOneJob = 10;
+    static int maxSumOfJobs = 100;
+    static int maxSizeOfOneJob = 30;
     public static void main(String[] args) throws GRBException {
 
         JobsGeneration jobsGenerator = new JobsGeneration();
@@ -30,6 +32,7 @@ public class Main {
             jobsGenerator.printJobs(y_i);//Verstecken
             jobsGenerator.printJobs(x_i);//Verstecken
             z_ij = model.solveLP(numberOfJobs, x_i, y_i);
+            //z_ij = ArrayRound(z_ij);
             z_ij = shift.doShift(z_ij, j, x_i);
             z_ij = transform.doTransform(z_ij, j, x_i);
 
@@ -42,4 +45,5 @@ public class Main {
         }
 
     }
+
 }
