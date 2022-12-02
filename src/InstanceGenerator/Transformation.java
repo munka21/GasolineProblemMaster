@@ -1,38 +1,147 @@
 package InstanceGenerator;
 import java.util.Arrays;
 
-public class Shift {
+import static Tests.MatrixOp.*;
+
+public class Transformation {
     int i_1;
     int i_2;
     int i_3;
     double delta;
+    double transformDelta;
     boolean isShiftPossible;
+    double[] z_j;
+    int n;
+    int j_prime;
 
-    public double[][] doShift(double[][] z_ij, int j, int[] int_xi){
+    public double[][] doTransformation(double[][] z_ij, int j, int[] int_xi){
         System.out.println("Vor Shift");//TODO: Löschen
         testPrintMatrix2D(z_ij);//TODO: Löschen
         double[] x_i = intArrayToDouble(int_xi);
+        n = z_ij.length;
         do{
             lookForIndexAndSet(z_ij, j);
             if (isShiftPossible == true){
                 setDelta(z_ij, j, x_i);
-                z_ij = useFormel(z_ij, x_i, j);
+                if (checkDelta() == false){
+                    System.out.println("Small delta: " + delta );
+                }
+                delta = round(delta, 3);
+                z_ij = doShift(z_ij, x_i, j);
+                z_ij = Array2DRound(z_ij);
+
+
                 System.out.println("After Shift");//TODO: Löschen
                 testPrintMatrix2D(z_ij);//TODO: Löschen
-                //TODO: transform hier nach jedem einzigen shift
-                /*
-                Wenn transform hier wird, dann haben wir direkt
-                i_1, i_2, i_3 und delta, mann mus nur transform
-                machen und j_prime finden und abziehen.
-                 */
+
+
+                calculateFractionalValues(z_ij);
+                z_j = ArrayRound(z_j);
+
+                System.out.println("\nz_j:");//TODO: Löschen
+                System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
+                int preventionOfRoundingError = 0;
+
+                while (check_zj() != true){
+                    preventionOfRoundingError++;
+                    set_j_prime(z_ij, j + 1);//TODO: Do only if one of z_j > 1
+                    setTransformDelta(z_ij);
+                    transformDelta = round(transformDelta, 3);
+                    z_ij = doTransform(z_ij, x_i);
+                    z_ij = Array2DRound(z_ij);
+                    calculateFractionalValues(z_ij);
+                    z_j = ArrayRound(z_j);
+
+                    System.out.println("\nz_j After Transform:");//TODO: Löschen
+                    System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
+                    System.out.println("After Transform");//TODO: Löschen
+                    testPrintMatrix2D(z_ij);//TODO: Löschen
+
+                    if((preventionOfRoundingError > 1000)){
+                        System.out.println("Rounding Error");
+                        break;
+                    }
+
+                    if ((checkDelta() == false) || (checkTransformDelta() == false)){
+                        set_j_prime(z_ij, j);//TODO:chek if funktioniert
+                        System.out.println("Small Delta or TransformDelta\n Delta: " + delta + " TransformDelta: " + transformDelta);
+                    }
+                }
                 continue;
             }
             break;
         }while (true);
+        System.out.println("\nz_j Letzte:");//TODO: Löschen
+        System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
         return z_ij;
     }
 
-    private double[][] useFormel (double[][] z_ij, double[] x_i, int j){
+    private boolean checkTransformDelta(){
+        if (round(transformDelta,3) < 0.001){
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkDelta(){
+        if ((round(delta, 3)) < 0.001){
+        return false;
+        }
+        return true;
+    }
+
+    private void setTransformDelta(double[][] z_ij){
+        if (delta >= z_ij[i_2][j_prime]){
+            transformDelta = z_ij[i_2][j_prime];
+            delta = delta - transformDelta;
+        }
+        else {
+            transformDelta = delta;
+        }
+    }
+
+    private boolean check_zj(){
+        for (int i = 0; i < n; i++){
+            if ((round(z_j[i], 3) > 1.001) || ((round(z_j[i], 3) < 0.999))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void set_j_prime(double[][] z_ij, int j){
+        for (; j < n; j++){
+            if (round(z_ij[i_2][j], 5) > 0.00000){
+                j_prime = j;
+                return;
+            }
+        }
+    }
+
+    private void calculateFractionalValues(double[][] z_ij){
+        z_j = new double[n];
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                z_j[i] = z_j[i] + z_ij[i][j];
+            }
+        }
+    }
+
+    private double[][] doTransform(double[][] z_ij, double[] x_i){
+        double y_i1 = ((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3]));
+        double y_i3 = ((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3]));
+        z_ij[i_2][j_prime] = z_ij[i_2][j_prime] - transformDelta;
+        if (x_i[i_1] == x_i[i_3]){
+            z_ij[i_1][j_prime] = z_ij[i_1][j_prime] + transformDelta;
+            z_ij[i_3][j_prime] = z_ij[i_3][j_prime];
+        } else{
+            z_ij[i_1][j_prime] = z_ij[i_1][j_prime] + (transformDelta * y_i1);
+            z_ij[i_3][j_prime] = z_ij[i_3][j_prime] + (transformDelta * y_i3);
+        }
+        return z_ij;
+    }
+
+    private double[][] doShift(double[][] z_ij, double[] x_i, int j){
         double y_i1 = ((x_i[i_2]-x_i[i_3])/(x_i[i_1]-x_i[i_3]));
         double y_i3 = ((x_i[i_1]-x_i[i_2])/(x_i[i_1]-x_i[i_3]));
         z_ij[i_2][j] = z_ij[i_2][j] + delta;
@@ -50,7 +159,7 @@ public class Shift {
         /*
         Es ist ein Intelligent Wahl von Delta, wir bekommen immer das maximale Delta
         so das entweder eine von Schranken (i_1, i_3) 0 wird oder i_2 maximal erhört
-        nur in einen Shift Lauf. Frag ob es so bleiben kann unb erklärt wie es
+        nur in einen Transformation Lauf. Frag ob es so bleiben kann unb erklärt wie es
         gemacht wurde.
         ai = z_ij - (delta * yi) => weil es gleich 0 sein sollte, dann setzen wir ai = 0
         (0 - z_ij)/yi = -delta
