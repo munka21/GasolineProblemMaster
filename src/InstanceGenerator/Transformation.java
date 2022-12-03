@@ -1,8 +1,6 @@
 package InstanceGenerator;
 import java.util.Arrays;
 
-import static Tests.MatrixOp.*;
-
 public class Transformation {
     int i_1;
     int i_2;
@@ -15,81 +13,47 @@ public class Transformation {
     int j_prime;
 
     public double[][] doTransformation(double[][] z_ij, int j, int[] int_xi){
-        System.out.println("Vor Shift");//TODO: Löschen
-        testPrintMatrix2D(z_ij);//TODO: Löschen
+        System.out.println("Vor Shift");//TODO: Löschen, nur für Tests
+        testPrintMatrix2D(z_ij);//TODO: Löschen, nur für Tests
         double[] x_i = intArrayToDouble(int_xi);
         n = z_ij.length;
         do{
             lookForIndexAndSet(z_ij, j);
             if (isShiftPossible == true){
-                setDelta(z_ij, j, x_i);/*
-                if (checkDelta() == false){//TODO: Löschen
-                    System.out.println("Small delta: " + delta );//TODO: Löschen
-                }*/
-                //delta = round(delta, 3);//TODO: Löschen
+                setDelta(z_ij, j, x_i);
                 z_ij = doShift(z_ij, x_i, j);
-                //z_ij = Array2DRound(z_ij);//TODO: Löschen
-
-
-                System.out.println("After Shift");//TODO: Löschen
-                testPrintMatrix2D(z_ij);//TODO: Löschen
-
-
+                System.out.println("After Shift");//TODO: Löschen, nur für Tests
+                testPrintMatrix2D(z_ij);//TODO: Löschen, nur für Tests
                 calculateFractionalValues(z_ij);
-                //z_j = ArrayRound(z_j);//TODO:
-
-                System.out.println("\nz_j:");//TODO: Löschen
-                System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
+                System.out.println("\nz_j:");//TODO: Löschen, nur für Tests
+                System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen, nur für Tests
                 int preventionOfRoundingError = 0;
 
                 while (check_zj() != true){
                     preventionOfRoundingError++;
-                    set_j_prime(z_ij, j + 1);//TODO: Do only if one of z_j > 1
+                    set_j_prime(z_ij, j + 1);
                     setTransformDelta(z_ij);
-                    //transformDelta = round(transformDelta, 3);//TODO: Löschen
                     z_ij = doTransform(z_ij, x_i);
-                    //z_ij = Array2DRound(z_ij);//TODO: Löschen
                     calculateFractionalValues(z_ij);
-                    //z_j = ArrayRound(z_j);//TODO: Löschen
 
-                    System.out.println("\nz_j After Transform:");//TODO: Löschen
-                    System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
-                    System.out.println("After Transform");//TODO: Löschen
-                    testPrintMatrix2D(z_ij);//TODO: Löschen
+                    System.out.println("\nz_j After Transform:");//TODO: Löschen, nur für Tests
+                    System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen, nur für Tests
+                    System.out.println("After Transform");//TODO: Löschen, nur für Tests
+                    testPrintMatrix2D(z_ij);//TODO: Löschen, nur für Tests
 
                     if((preventionOfRoundingError > 1000)){
                         System.out.println("Rounding Error");
                         break;
                     }
-/*
-                    if ((checkDelta() == false) || (checkTransformDelta() == false)){//TODO: Löschen
-                        set_j_prime(z_ij, j);//TODO:check if funktioniert//TODO: Löschen
-                        System.out.println("Small Delta or TransformDelta\n Delta: " + delta + " TransformDelta: " + transformDelta);//TODO: Löschen
-                    }*/
                 }
                 continue;
             }
             break;
         }while (true);
-        System.out.println("\nz_j Letzte:");//TODO: Löschen
-        System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
+        System.out.println("\nz_j Letzte:");//TODO: Löschen, nur für Tests
+        System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen, nur für Tests
         return z_ij;
     }
-/*//TODO: Löschen
-    private boolean checkTransformDelta(){
-        if (round(transformDelta,3) < 0.001){
-            return false;
-        }
-        return true;
-    }
-//TODO: Löschen
-    private boolean checkDelta(){
-        if ((round(delta, 3)) < 0.001){
-        return false;
-        }
-        return true;
-    }
-*/
     private void setTransformDelta(double[][] z_ij){
         if (delta >= z_ij[i_2][j_prime]){
             transformDelta = z_ij[i_2][j_prime];
@@ -173,7 +137,7 @@ public class Transformation {
         double maxDelta_i2 = 1.0 - sum_i2;
         delta = Math.min(maxDelta_i1, maxDelta_i3);
         delta = Math.min(delta, maxDelta_i2);
-        System.out.println("\nDelta:" + delta + "\n");//TODO: Löschen
+        System.out.println("\nDelta:" + delta + "\n");//TODO: Löschen, nur für Tests
     }
 
     private void lookForIndexAndSet(double[][] z_ij, int j){
