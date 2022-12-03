@@ -22,13 +22,13 @@ public class Transformation {
         do{
             lookForIndexAndSet(z_ij, j);
             if (isShiftPossible == true){
-                setDelta(z_ij, j, x_i);
-                if (checkDelta() == false){
-                    System.out.println("Small delta: " + delta );
-                }
-                delta = round(delta, 3);
+                setDelta(z_ij, j, x_i);/*
+                if (checkDelta() == false){//TODO: Löschen
+                    System.out.println("Small delta: " + delta );//TODO: Löschen
+                }*/
+                //delta = round(delta, 3);//TODO: Löschen
                 z_ij = doShift(z_ij, x_i, j);
-                z_ij = Array2DRound(z_ij);
+                //z_ij = Array2DRound(z_ij);//TODO: Löschen
 
 
                 System.out.println("After Shift");//TODO: Löschen
@@ -36,7 +36,7 @@ public class Transformation {
 
 
                 calculateFractionalValues(z_ij);
-                z_j = ArrayRound(z_j);
+                //z_j = ArrayRound(z_j);//TODO:
 
                 System.out.println("\nz_j:");//TODO: Löschen
                 System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
@@ -46,11 +46,11 @@ public class Transformation {
                     preventionOfRoundingError++;
                     set_j_prime(z_ij, j + 1);//TODO: Do only if one of z_j > 1
                     setTransformDelta(z_ij);
-                    transformDelta = round(transformDelta, 3);
+                    //transformDelta = round(transformDelta, 3);//TODO: Löschen
                     z_ij = doTransform(z_ij, x_i);
-                    z_ij = Array2DRound(z_ij);
+                    //z_ij = Array2DRound(z_ij);//TODO: Löschen
                     calculateFractionalValues(z_ij);
-                    z_j = ArrayRound(z_j);
+                    //z_j = ArrayRound(z_j);//TODO: Löschen
 
                     System.out.println("\nz_j After Transform:");//TODO: Löschen
                     System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
@@ -61,11 +61,11 @@ public class Transformation {
                         System.out.println("Rounding Error");
                         break;
                     }
-
-                    if ((checkDelta() == false) || (checkTransformDelta() == false)){
-                        set_j_prime(z_ij, j);//TODO:chek if funktioniert
-                        System.out.println("Small Delta or TransformDelta\n Delta: " + delta + " TransformDelta: " + transformDelta);
-                    }
+/*
+                    if ((checkDelta() == false) || (checkTransformDelta() == false)){//TODO: Löschen
+                        set_j_prime(z_ij, j);//TODO:check if funktioniert//TODO: Löschen
+                        System.out.println("Small Delta or TransformDelta\n Delta: " + delta + " TransformDelta: " + transformDelta);//TODO: Löschen
+                    }*/
                 }
                 continue;
             }
@@ -75,21 +75,21 @@ public class Transformation {
         System.out.println(Arrays.toString(z_j)+ "\n");//TODO: Löschen
         return z_ij;
     }
-
+/*//TODO: Löschen
     private boolean checkTransformDelta(){
         if (round(transformDelta,3) < 0.001){
             return false;
         }
         return true;
     }
-
+//TODO: Löschen
     private boolean checkDelta(){
         if ((round(delta, 3)) < 0.001){
         return false;
         }
         return true;
     }
-
+*/
     private void setTransformDelta(double[][] z_ij){
         if (delta >= z_ij[i_2][j_prime]){
             transformDelta = z_ij[i_2][j_prime];
@@ -102,7 +102,7 @@ public class Transformation {
 
     private boolean check_zj(){
         for (int i = 0; i < n; i++){
-            if ((round(z_j[i], 3) > 1.001) || ((round(z_j[i], 3) < 0.999))){
+            if ((z_j[i] > 1.000000001) || (z_j[i] < 0.9999999)){
                 return false;
             }
         }
@@ -111,7 +111,7 @@ public class Transformation {
 
     private void set_j_prime(double[][] z_ij, int j){
         for (; j < n; j++){
-            if (round(z_ij[i_2][j], 5) > 0.00000){
+            if (z_ij[i_2][j] > 0.00000){
                 j_prime = j;
                 return;
             }
