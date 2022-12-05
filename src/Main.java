@@ -16,6 +16,7 @@ public class Main {
         GreedyAlgo greedy = new GreedyAlgo();
         ModelGurobi model = new ModelGurobi();
         Transformation transformation = new Transformation();
+        Rounding rounding = new Rounding();
 
         int y_i[];
         int x_i[];
@@ -31,6 +32,7 @@ public class Main {
             z_ij = transformation.doTransformation(z_ij, j, x_i);
             j++;
         }
+        z_ij = rounding.doRounding(z_ij);
 
     }
 
