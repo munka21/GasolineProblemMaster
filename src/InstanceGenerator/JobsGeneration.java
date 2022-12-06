@@ -11,48 +11,45 @@ public class JobsGeneration {
         return true;
     }
 
-    public int[] nGenerator(int bound, int n, int sum, boolean sort){
+    public int[] nGenerator(int bound, int n, int sum, boolean sort) throws Exception {
+        if (isPossible(bound,n,sum) == false){
+            throw new Exception("It is not possible to make a list of jobs with these paramaters.");
+        }
         Random random = new Random();
         int JobList[] = new int[n];
         int currentSum = 0;
         int currentJob = 0;
-        if (isPossible(bound,n,sum) == false){
-            System.out.print("\nIt is not possible to make a list of jobs with these paramaters.\n");
-            return JobList;
-        }
-        else {
-            for (int index = 0; index < n ;index++){
-                if (currentSum == sum){
-                    JobList[index] = 0;
-                }
-                if (currentSum < sum){
-                    int job = random.nextInt(bound);
-                    currentJob = job;
-                    currentSum = currentSum + job;
-                    JobList[index] = job;
-                }
-                if ((currentSum < sum) && (index == (n - 1))){
-                    while (currentSum != sum){
-                        int newIndex = random.nextInt(n-1);
-                        if (JobList[newIndex] < bound){
-                            JobList[newIndex] = JobList[newIndex] + 1;
-                            currentSum = currentSum + 1;
-                        }
-                        else {
-                            continue;
-                        }
+        for (int index = 0; index < n ;index++){
+            if (currentSum == sum){
+                JobList[index] = 0;
+            }
+            if (currentSum < sum){
+                int job = random.nextInt(bound);
+                currentJob = job;
+                currentSum = currentSum + job;
+                JobList[index] = job;
+            }
+            if ((currentSum < sum) && (index == (n - 1))){
+                while (currentSum != sum){
+                    int newIndex = random.nextInt(n-1);
+                    if (JobList[newIndex] < bound){
+                        JobList[newIndex] = JobList[newIndex] + 1;
+                        currentSum = currentSum + 1;
+                    }
+                    else {
+                        continue;
                     }
                 }
-                if ((currentSum > sum)  && (index == (n - 1))){
-                    while (currentSum != sum){
-                        int newIndex = random.nextInt(n-1);
-                        if (JobList[newIndex] >= 1){
-                            JobList[newIndex] = JobList[newIndex] - 1;
-                            currentSum = currentSum - 1;
-                        }
-                        else {
-                            continue;
-                        }
+            }
+            if ((currentSum > sum)  && (index == (n - 1))){
+                while (currentSum != sum){
+                    int newIndex = random.nextInt(n-1);
+                    if (JobList[newIndex] >= 1){
+                        JobList[newIndex] = JobList[newIndex] - 1;
+                        currentSum = currentSum - 1;
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
