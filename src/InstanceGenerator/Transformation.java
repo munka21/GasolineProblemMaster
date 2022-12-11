@@ -137,7 +137,7 @@ public class Transformation {
         double maxDelta_i2 = 1.0 - sum_i2;
         delta = Math.min(maxDelta_i1, maxDelta_i3);
         delta = Math.min(delta, maxDelta_i2);
-        System.out.println("Delta:" + delta);//TODO: Löschen, nur für Tests
+        //System.out.println("Delta:" + delta);//TODO: Löschen, nur für Tests
     }
 
     private void lookForIndexAndSet(double[][] z_ij, int j){

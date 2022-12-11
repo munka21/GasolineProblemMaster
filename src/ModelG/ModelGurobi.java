@@ -31,10 +31,12 @@ public class ModelGurobi {
 
         // Set objective:
         GRBLinExpr expr = new GRBLinExpr();
-        expr.addTerm(1.0, beta); expr.addTerm(-1.0, alpha);
+        expr.addTerm(1, beta);
+        expr.addTerm(-1, alpha);
         model.setObjective(expr, GRB.MINIMIZE);
 
         // Add constraints:
+        //Constraint 1
         expr = new GRBLinExpr();
         for (int i = 0; i < n; i++){
             expr = new GRBLinExpr();
@@ -45,6 +47,7 @@ public class ModelGurobi {
             constraintnummber++;
         }
 
+        //Constraint 2
         expr = new GRBLinExpr();
         for (int j = 0; j < n; j++){
             expr = new GRBLinExpr();
@@ -55,6 +58,7 @@ public class ModelGurobi {
             constraintnummber++;
         }
 
+        //Constraint 3
         expr = new GRBLinExpr();
         int k;
         for (int j = 0; j < n; j++){
@@ -63,18 +67,19 @@ public class ModelGurobi {
             }
             if (j > 0){
                 k = j - 1;
-                expr.addConstant((-1) * y[k]);
+                expr.addConstant(-y[k]);
             }
             model.addConstr(expr, GRB.LESS_EQUAL, beta, "c" + constraintnummber);
             constraintnummber++;
         }
 
+        //Constraint 4
         expr = new GRBLinExpr();
         for (int j = 0; j < n; j++){
             for (int i = 0; i < n; i++){
                 expr.addTerm(x[i], z[i][j]);
             }
-            expr.addConstant((-1) * y[j]);
+            expr.addConstant(-y[j]);
             model.addConstr(expr, GRB.GREATER_EQUAL, alpha, "c" + constraintnummber);
             constraintnummber++;
         }
@@ -86,12 +91,12 @@ public class ModelGurobi {
         System.out.println(beta.get(GRB.StringAttr.VarName) + " = " + beta.get(GRB.DoubleAttr.X));
 
         //To Output
-        //System.out.println("\nz["+ n + "][" + n + "]********* : ");
+        System.out.println("\nz["+ n + "][" + n + "] : ");
         for (int i = 0; i < n ; i++){
             for (int j = 0; j < n; j++){
                 Output[i][j] = z[i][j].get(GRB.DoubleAttr.X);
             }
-            //System.out.println(Arrays.toString(Output[i]));
+            System.out.println(Arrays.toString(Output[i]));
         }
         // Dispose of model and environment
         model.dispose();

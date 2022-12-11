@@ -1,4 +1,3 @@
-import Greedy.GreedyAlgo;
 import InstanceGenerator.JobsGeneration;
 import InstanceGenerator.Rounding;
 import InstanceGenerator.Transformation;
@@ -9,9 +8,9 @@ import gurobi.GRBException;
 
 public class GasolineProblemGenerator {
 
-    static int numberOfJobs = 6;
-    static int maxSumOfJobs = 200;
-    static int maxSizeOfOneJob = 70;
+    static int numberOfJobs = 5;
+    static int maxSumOfJobs = 100;
+    static int maxSizeOfOneJob = 50;
     static int[] y_i;
     static int[] x_i;
 
@@ -60,14 +59,20 @@ public class GasolineProblemGenerator {
     protected static void startAlgo() throws Exception {
         doGenerateJobs();
         double[][] z_ij = doSolveLP();
+        testLPGurobi(z_ij);
         z_ij = doAlgo(z_ij);
         testResult(z_ij);
     }
 
     protected static void testResult(double[][] z_ij) throws Exception {
         TestAlgo test = new TestAlgo();
-        test.doTest(z_ij,x_i,y_i);
+        test.doTestEndResult(z_ij,x_i,y_i);
 
+    }
+
+    protected static void testLPGurobi(double[][] z_ij){
+        TestAlgo test = new TestAlgo();
+        test.testLP(z_ij, x_i, y_i);
     }
 
 }
