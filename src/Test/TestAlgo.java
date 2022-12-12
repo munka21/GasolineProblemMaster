@@ -39,7 +39,7 @@ public class TestAlgo {
             tankLog[index] = tank;
             index++;
             if (tank < 0.00000){
-                System.err.println("The LP is incorrect");
+                System.err.println("The Tank of LP is smaller as Road");
             }
         }
         System.out.println("\nTank Log LP:");
