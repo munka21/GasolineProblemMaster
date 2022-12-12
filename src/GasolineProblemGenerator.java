@@ -8,9 +8,9 @@ import gurobi.GRBException;
 
 public class GasolineProblemGenerator {
 
-    static int numberOfJobs = 5;
-    static int maxSumOfJobs = 100;
-    static int maxSizeOfOneJob = 50;
+    static int numberOfJobs = 6;
+    static int maxSumOfJobs = 300;
+    static int maxSizeOfOneJob = 150;
     static int[] y_i;
     static int[] x_i;
 
