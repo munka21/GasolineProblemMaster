@@ -22,7 +22,7 @@ public class ModelGurobi {
         GRBVar[][] z = new GRBVar[n][n];
         for (int i = 0; i < n; i++){
             for (int j = 0; j < n; j++){
-                z[i][j] = model.addVar(0.0, 1.0, 0.0, GRB.CONTINUOUS, "z");
+                z[i][j] = model.addVar(0.0, 1.0, 0.0, GRB.CONTINUOUS, "z" + i + j);
             }
         }
 
@@ -34,9 +34,8 @@ public class ModelGurobi {
 
         // Add constraints:
         //Constraint 1
-        GRBLinExpr cons1;
         for (int i = 0; i < n; i++){
-            cons1 = new GRBLinExpr();
+            GRBLinExpr cons1 = new GRBLinExpr();
             for (int j = 0; j < n; j++){
                 cons1.addTerm(1.0, z[i][j]);
             }
@@ -44,9 +43,8 @@ public class ModelGurobi {
         }
 
         //Constraint 2
-        GRBLinExpr cons2;
         for (int j = 0; j < n; j++){
-            cons2 = new GRBLinExpr();
+            GRBLinExpr cons2 = new GRBLinExpr();
             for (int i = 0; i < n; i++){
                 cons2.addTerm(1.0, z[i][j]);
             }
@@ -54,9 +52,8 @@ public class ModelGurobi {
         }
 
         //Constraint 3
-        GRBLinExpr cons3;
         for (int k = 0; k < n; k++){
-            cons3 = new GRBLinExpr();
+            GRBLinExpr cons3 = new GRBLinExpr();
             for (int j = 0; j < k; j++){
                 for (int i = 0; i < n; i++){
                     double xi = x[i];
@@ -73,9 +70,8 @@ public class ModelGurobi {
         }
 
         //Constraint 4
-        GRBLinExpr cons4;
         for (int k = 0; k < n; k++){
-            cons4 = new GRBLinExpr();
+            GRBLinExpr cons4 = new GRBLinExpr();
             for (int j = 0; j < k; j++){
                 for (int i = 0; i < n; i++){
                     double xi = x[i];
