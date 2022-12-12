@@ -8,6 +8,7 @@ public class ModelGurobi {
     public static double[][] solveLP (int n, int x[], int y[]) throws GRBException {
         //Create Output
         double [][] output = new double[n][n];
+        int consNumber = 1;
 
         // Create empty environment
         GRBEnv environment = new GRBEnv(true);
@@ -39,7 +40,8 @@ public class ModelGurobi {
             for (int j = 0; j < n; j++){
                 cons1.addTerm(1.0, z[i][j]);
             }
-            model.addConstr(cons1, GRB.EQUAL, 1.0, "c");
+            model.addConstr(cons1, GRB.EQUAL, 1.0, "c" + consNumber);
+            consNumber++;
         }
 
         //Constraint 2
@@ -48,7 +50,8 @@ public class ModelGurobi {
             for (int i = 0; i < n; i++){
                 cons2.addTerm(1.0, z[i][j]);
             }
-            model.addConstr(cons2, GRB.EQUAL, 1.0, "c" );
+            model.addConstr(cons2, GRB.EQUAL, 1.0, "c" + consNumber);
+            consNumber++;
         }
 
         //Constraint 3
@@ -64,27 +67,27 @@ public class ModelGurobi {
             for (int j = 0; j < k-1; j++){
                 sum = sum + y[j];
             }
-            double yi = (-1) * sum;
+            double yi = (-1.0) * sum;
             cons3.addConstant(yi);
-            model.addConstr(cons3, GRB.LESS_EQUAL, beta, "c");
+            model.addConstr(cons3, GRB.LESS_EQUAL, beta, "c" + consNumber);
+            consNumber++;
         }
 
         //Constraint 4
         for (int k = 0; k < n; k++){
+            int sum = 0;
             GRBLinExpr cons4 = new GRBLinExpr();
             for (int j = 0; j < k; j++){
                 for (int i = 0; i < n; i++){
                     double xi = x[i];
                     cons4.addTerm(xi, z[i][j]);
                 }
-            }
-            int sum = 0;
-            for (int j = 0; j < k; j++){
                 sum = sum + y[j];
             }
-            double yi = (-1) * sum;
+            double yi = (-1.0) * sum;
             cons4.addConstant(yi);
-            model.addConstr(cons4, GRB.GREATER_EQUAL, alpha, "c");
+            model.addConstr(cons4, GRB.GREATER_EQUAL, alpha, "c" + consNumber);
+            consNumber++;
         }
 
         // Optimize model
