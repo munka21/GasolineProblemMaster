@@ -8,9 +8,9 @@ import gurobi.GRBException;
 
 public class GasolineProblemGenerator {
 
-    static int numberOfJobs = 6;
-    static int maxSumOfJobs = 300;
-    static int maxSizeOfOneJob = 150;
+    static int numberOfJobs = 4;
+    static int maxSumOfJobs = 150;
+    static int maxSizeOfOneJob = 60;
     static int[] y_i;
     static int[] x_i;
 
@@ -19,9 +19,19 @@ public class GasolineProblemGenerator {
         do {
             y_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs, false);
             x_i = jobsGenerator.nGenerator(maxSizeOfOneJob, numberOfJobs, maxSumOfJobs, true);
-        }while (existNaiveSolutions(y_i, x_i) != true);
-        jobsGenerator.printJobs(y_i);
-        jobsGenerator.printJobs(x_i);
+        }while (checkIfJobsAreCorrect(y_i,x_i) != true);
+        jobsGenerator.printJobs(y_i, "Y");
+        jobsGenerator.printJobs(x_i, "X");
+    }
+
+    private static boolean checkIfJobsAreCorrect(int[] y_i, int[] x_i){
+        if (existNaiveSolutions(y_i, x_i) == false){
+            return false;
+        }
+        if (checkForZero(y_i, x_i)){
+            return false;
+        }
+        return true;
     }
 
     private static boolean existNaiveSolutions(int[] y_i, int[] x_i){
@@ -35,6 +45,15 @@ public class GasolineProblemGenerator {
             }
         }
         return true;
+    }
+
+    private static boolean checkForZero(int[] y_i, int[] x_i){
+        for (int i = 0; i < numberOfJobs; i++){
+            if ((y_i[i] == 0) || (x_i[i] == 0)){
+                return true;
+            }
+        }
+        return false;
     }
 
     protected static double[][] doSolveLP() throws GRBException {

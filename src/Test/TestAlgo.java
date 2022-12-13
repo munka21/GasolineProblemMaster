@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class TestAlgo {
     public void doTestEndResult(double[][] z_ij, int[] x_i, int[] y_i) throws Exception {
+        boolean isOkay = true;
         int n = z_ij.length;
         int tank = 0;
         int index = 0;
@@ -15,16 +16,20 @@ public class TestAlgo {
                     tankLog[index] = tank;
                     index++;
                     if (tank < 0){
-                        System.err.println("The result is incorrect");
+                        isOkay = false;
                     }
                 }
             }
+        }
+        if (isOkay == false){
+            System.err.println("The result is incorrect");
         }
         System.out.println("\nTank Log End:");
         System.out.println(Arrays.toString(tankLog));
     }
 
     public void testLP(double[][] z_ij, int[] x_i, int[] y_i){
+        boolean isOkay = true;
         int n = z_ij.length;
         double tank = 0;
         int index = 0;
@@ -39,8 +44,11 @@ public class TestAlgo {
             tankLog[index] = tank;
             index++;
             if (tank < 0.00000){
-                System.err.println("The Tank of LP is smaller as Road");
+                isOkay = false;
             }
+        }
+        if (isOkay == false){
+            System.err.println("The Tank of LP is smaller as Road");
         }
         System.out.println("\nTank Log LP:");
         System.out.println(Arrays.toString(tankLog));

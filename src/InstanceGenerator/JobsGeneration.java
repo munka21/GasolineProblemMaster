@@ -72,8 +72,9 @@ public class JobsGeneration {
         return JobList;
     }
 
-    public void printJobs (int JobsList[]){
+    public void printJobs (int JobsList[], String str){
         int length = JobsList.length;
+        System.out.print( str + ":= ");
         for (int index = 0; index < length; index++){
             if (index == 0){
                 System.out.print("[" + JobsList[index]);
