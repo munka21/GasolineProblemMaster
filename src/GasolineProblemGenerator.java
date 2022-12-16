@@ -1,6 +1,6 @@
+import Greedy.GreedyAlgo;
 import InstanceGenerator.JobsGeneration;
 import InstanceGenerator.Rounding;
-import InstanceGenerator.RoundingTemp;
 import InstanceGenerator.Transformation;
 import ModelG.ModelGurobi;
 import Test.TestAlgo;
@@ -9,9 +9,9 @@ import gurobi.GRBException;
 
 public class GasolineProblemGenerator {
 
-    static int numberOfJobs = 4;
-    static int maxSumOfJobs = 150;
-    static int maxSizeOfOneJob = 60;
+    static int numberOfJobs = 7;
+    static int maxSumOfJobs = 800;
+    static int maxSizeOfOneJob = 250;
     static int[] y_i;
     static int[] x_i;
 
@@ -26,9 +26,6 @@ public class GasolineProblemGenerator {
     }
 
     private static boolean checkIfJobsAreCorrect(int[] y_i, int[] x_i){
-        if (existNaiveSolutions(y_i, x_i) == false){
-            return false;
-        }
         if (checkForZero(y_i, x_i)){
             return false;
         }
@@ -66,24 +63,28 @@ public class GasolineProblemGenerator {
 
     protected static double[][] doAlgo(double[][] z_ij){
         Transformation transformation = new Transformation();
-        //Rounding rounding = new Rounding();
-        RoundingTemp roundingTemp = new RoundingTemp();
+        Rounding rounding = new Rounding();
         int j = 0;
         while (j != numberOfJobs) {
             z_ij = transformation.doTransformation(z_ij, j, x_i);
             j++;
         }
-        //z_ij = rounding.doRounding(z_ij);
-        z_ij = roundingTemp.doRounding(z_ij);
+        z_ij = rounding.doRounding(z_ij);
         return z_ij;
     }
 
     protected static void startAlgo() throws Exception {
         doGenerateJobs();
         double[][] z_ij = doSolveLP();
-        testLPGurobi(z_ij);
-        z_ij = doAlgo(z_ij);
-        testResult(z_ij);
+        doAlgo(z_ij);
+        doGreedy();
+    }
+
+    protected static double[][] doGreedy(){
+        GreedyAlgo greedy = new GreedyAlgo();
+        double[][] z_greedy = new double[numberOfJobs][numberOfJobs];
+        greedy.doGreedy(z_greedy, y_i, x_i);
+        return z_greedy;
     }
 
     protected static void testResult(double[][] z_ij) throws Exception {

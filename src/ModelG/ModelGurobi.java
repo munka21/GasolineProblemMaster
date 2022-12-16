@@ -97,12 +97,12 @@ public class ModelGurobi {
         System.out.println(beta.get(GRB.StringAttr.VarName) + " = " + beta.get(GRB.DoubleAttr.X));
 
         //To Output
-        System.out.println("\nz["+ n + "][" + n + "] : ");
+        //System.out.println("\nz["+ n + "][" + n + "] : ");
         for (int i = 0; i < n ; i++){
             for (int j = 0; j < n; j++){
                 output[i][j] = z[i][j].get(GRB.DoubleAttr.X);
             }
-            System.out.println(Arrays.toString(output[i]));
+            //System.out.println(Arrays.toString(output[i]));
         }
         // Dispose of model and environment
         model.dispose();
