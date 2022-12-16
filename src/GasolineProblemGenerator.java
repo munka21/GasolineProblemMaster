@@ -1,5 +1,6 @@
 import InstanceGenerator.JobsGeneration;
 import InstanceGenerator.Rounding;
+import InstanceGenerator.RoundingTemp;
 import InstanceGenerator.Transformation;
 import ModelG.ModelGurobi;
 import Test.TestAlgo;
@@ -65,13 +66,15 @@ public class GasolineProblemGenerator {
 
     protected static double[][] doAlgo(double[][] z_ij){
         Transformation transformation = new Transformation();
-        Rounding rounding = new Rounding();
+        //Rounding rounding = new Rounding();
+        RoundingTemp roundingTemp = new RoundingTemp();
         int j = 0;
         while (j != numberOfJobs) {
             z_ij = transformation.doTransformation(z_ij, j, x_i);
             j++;
         }
-        z_ij = rounding.doRounding(z_ij);
+        //z_ij = rounding.doRounding(z_ij);
+        z_ij = roundingTemp.doRounding(z_ij);
         return z_ij;
     }
 

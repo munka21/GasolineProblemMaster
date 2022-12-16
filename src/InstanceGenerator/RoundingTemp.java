@@ -10,7 +10,7 @@ public class RoundingTemp {
     public double[][] doRounding(double[][] z_ij){
         for (int j = 0; j < z_ij.length; j++){
             lookForAktivBlock(z_ij, j);
-            setSolutionMatrix(z_ij, j);
+            z_ij = setSolutionMatrix(z_ij, j);
         }
         System.out.println("Result:\n");
         testPrintMatrix(z_ij);
@@ -20,7 +20,9 @@ public class RoundingTemp {
     private void lookForAktivBlock(double[][] z_ij, int j){
         for (int i = 0; i < z_ij.length; i++){
             if (z_ij[i][j] > 0.000000000000000){
-                activeBlocks.add(i);
+                if (activeBlocks.contains(i) == false){
+                    activeBlocks.add(i);
+                }
             }
         }
         activeBlocks.sort(Comparator.naturalOrder());
@@ -30,7 +32,6 @@ public class RoundingTemp {
         for (int activeBlock : activeBlocks){
             if (checkIfEverywhereZero(z_ij, activeBlock, j)){
                 z_ij[activeBlock][j] = 1.0;
-                activeBlocks.remove(activeBlock);
                 setColumnToZero(z_ij, j);
                 break;
             }
