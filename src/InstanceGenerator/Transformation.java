@@ -193,39 +193,5 @@ public class Transformation {
         return double_x_i;
     }
 
-    protected static void testPrintMatrix2D(double[][] z_ij, String str, boolean round){
-        int n = z_ij.length;
-        System.out.println(str);
-        for (int i = 0; i < n; i++){
-            if (round == false){
-                System.out.println(Arrays.toString(z_ij[i]));
-            }
-            if (round == true){
-                double[][] z_ij_round = doRound(z_ij);
-                System.out.println(Arrays.toString(z_ij_round[i]));
-            }
-        }
-    }
-
-    protected static void testPrint_zj(double[] z_j, String str){
-        System.out.println("\n" + str);
-        System.out.println(Arrays.toString(z_j)+ "\n");
-    }
-
-    private static double[][] doRound(double[][] z_ij){
-        int n = z_ij.length;
-        double[][] z_ij_round =  new double[n][n];
-        for (int j = 0; j < n; j++){
-            for (int i = 0; i < n; i++){
-                z_ij_round[i][j] = round(z_ij[i][j], 2);
-            }
-        }
-        return z_ij_round;
-    }
-
-    private static double round(double value, int decimalPoints) {
-        double d = Math.pow(10, decimalPoints);
-        return Math.round(value * d) / d;
-    }
 
 }

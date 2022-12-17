@@ -1,6 +1,5 @@
 package InstanceGenerator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 
 
@@ -12,8 +11,6 @@ public class Rounding {
             lookForAktivBlock(z_ij, j);
             z_ij = setSolutionMatrix(z_ij, j);
         }
-        System.out.println("\nResult:");
-        testPrintMatrix(z_ij);
         return z_ij;
     }
 
@@ -56,13 +53,4 @@ public class Rounding {
         }
         return z_ij;
     }
-
-    private static void testPrintMatrix(double[][] z_ij){
-        int n = z_ij.length;
-        for (int i = 0; i < n; i++){
-            System.out.println(Arrays.toString(z_ij[i]));
-        }
-    }
-
-
 }

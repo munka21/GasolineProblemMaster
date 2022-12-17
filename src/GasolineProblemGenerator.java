@@ -6,11 +6,13 @@ import ModelG.ModelGurobi;
 import Test.TestAlgo;
 import gurobi.GRBException;
 
+import java.util.Arrays;
+
 
 public class GasolineProblemGenerator {
 
-    static int numberOfJobs = 7;
-    static int maxSumOfJobs = 800;
+    static int numberOfJobs = 5;
+    static int maxSumOfJobs = 500;
     static int maxSizeOfOneJob = 250;
     static int[] y_i;
     static int[] x_i;
@@ -28,19 +30,6 @@ public class GasolineProblemGenerator {
     private static boolean checkIfJobsAreCorrect(int[] y_i, int[] x_i){
         if (checkForZero(y_i, x_i)){
             return false;
-        }
-        return true;
-    }
-
-    private static boolean existNaiveSolutions(int[] y_i, int[] x_i){
-        int sum_yi = 0;
-        int sum_xi = 0;
-        for (int i = 0; i < numberOfJobs; i++){
-            sum_yi = sum_yi + y_i[i];
-            sum_xi = sum_xi + x_i[i];
-            if (sum_yi > sum_xi){
-                return false;
-            }
         }
         return true;
     }
@@ -74,10 +63,15 @@ public class GasolineProblemGenerator {
     }
 
     protected static void startAlgo() throws Exception {
+        TestAlgo test = new TestAlgo();
         doGenerateJobs();
         double[][] z_ij = doSolveLP();
-        doAlgo(z_ij);
-        doGreedy();
+        z_ij = doAlgo(z_ij);
+        testPrintMatrix(z_ij, "\nResult Algo:");
+        test.doTestEndResult(z_ij,x_i,y_i);
+        double[][] z_greedy = doGreedy();
+        testPrintMatrix(z_greedy, "\nResult Greedy:");
+        test.doTestEndResult(z_greedy,x_i,y_i);
     }
 
     protected static double[][] doGreedy(){
@@ -87,15 +81,12 @@ public class GasolineProblemGenerator {
         return z_greedy;
     }
 
-    protected static void testResult(double[][] z_ij) throws Exception {
-        TestAlgo test = new TestAlgo();
-        test.doTestEndResult(z_ij,x_i,y_i);
-
-    }
-
-    protected static void testLPGurobi(double[][] z_ij){
-        TestAlgo test = new TestAlgo();
-        test.testLP(z_ij, x_i, y_i);
+    private static void testPrintMatrix(double[][] z_ij, String str){
+        int n = z_ij.length;
+        System.out.println(str);
+        for (int i = 0; i < n; i++){
+            System.out.println(Arrays.toString(z_ij[i]));
+        }
     }
 
 }
