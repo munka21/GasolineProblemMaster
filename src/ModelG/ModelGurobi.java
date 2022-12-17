@@ -1,11 +1,13 @@
 package ModelG;
+import Test.log;
 import gurobi.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class ModelGurobi {
 
-    public static double[][] solveLP (int n, int x[], int y[]) throws GRBException {
+    public static double[][] solveLP (int n, int x[], int y[]) throws GRBException, IOException {
         //Create Output
         double [][] output = new double[n][n];
         int consNumber = 1;
@@ -95,6 +97,9 @@ public class ModelGurobi {
         System.out.println("Obj: " + model.get(GRB.DoubleAttr.ObjVal));
         System.out.println(alpha.get(GRB.StringAttr.VarName) + " = " + alpha.get(GRB.DoubleAttr.X));
         System.out.println(beta.get(GRB.StringAttr.VarName) + " = " + beta.get(GRB.DoubleAttr.X));
+
+        log log = new log();
+        log.addLpToLog(model.get(GRB.DoubleAttr.ObjVal), alpha.get(GRB.DoubleAttr.X), beta.get(GRB.DoubleAttr.X));
 
         //To Output
         //System.out.println("\nz["+ n + "][" + n + "] : ");

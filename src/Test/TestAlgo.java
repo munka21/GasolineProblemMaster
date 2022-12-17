@@ -3,7 +3,7 @@ package Test;
 import java.util.Arrays;
 
 public class TestAlgo {
-    public void doTestEndResult(double[][] z_ij, int[] x_i, int[] y_i) throws Exception {
+    public int[] doTestEndResult(double[][] z_ij, int[] x_i, int[] y_i) throws Exception {
         int n = z_ij.length;
         int toZero = 0;
         int index = 0;
@@ -19,6 +19,7 @@ public class TestAlgo {
         }
         System.out.println("Tank Log End:");
         System.out.println(Arrays.toString(toZeroLog));
+        return toZeroLog;
     }
 
 }

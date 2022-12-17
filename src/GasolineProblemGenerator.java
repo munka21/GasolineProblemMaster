@@ -4,8 +4,10 @@ import InstanceGenerator.Rounding;
 import InstanceGenerator.Transformation;
 import ModelG.ModelGurobi;
 import Test.TestAlgo;
+import Test.log;
 import gurobi.GRBException;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 
@@ -17,6 +19,9 @@ public class GasolineProblemGenerator {
     static int[] y_i;
     static int[] x_i;
 
+    static log log = new log();
+    static TestAlgo test = new TestAlgo();
+
     protected static void doGenerateJobs() throws Exception {
         JobsGeneration jobsGenerator = new JobsGeneration();
         do {
@@ -25,6 +30,8 @@ public class GasolineProblemGenerator {
         }while (checkIfJobsAreCorrect(y_i,x_i) != true);
         jobsGenerator.printJobs(y_i, "Y");
         jobsGenerator.printJobs(x_i, "X");
+        log.addJobsToLog("Y:" + Arrays.toString(y_i));
+        log.addJobsToLog("X:" + Arrays.toString(x_i));
     }
 
     private static boolean checkIfJobsAreCorrect(int[] y_i, int[] x_i){
@@ -43,7 +50,7 @@ public class GasolineProblemGenerator {
         return false;
     }
 
-    protected static double[][] doSolveLP() throws GRBException {
+    protected static double[][] doSolveLP() throws GRBException, IOException {
         ModelGurobi model = new ModelGurobi();
         double[][] z_ij;
         z_ij = model.solveLP(numberOfJobs, x_i, y_i);
@@ -63,15 +70,20 @@ public class GasolineProblemGenerator {
     }
 
     protected static void startAlgo() throws Exception {
-        TestAlgo test = new TestAlgo();
+        log.startTestLog(numberOfJobs, maxSumOfJobs, maxSizeOfOneJob);
         doGenerateJobs();
         double[][] z_ij = doSolveLP();
         z_ij = doAlgo(z_ij);
-        testPrintMatrix(z_ij, "\nResult Algo:");
-        test.doTestEndResult(z_ij,x_i,y_i);
+        testPrintAndLog(z_ij, "Result Algo:");
         double[][] z_greedy = doGreedy();
-        testPrintMatrix(z_greedy, "\nResult Greedy:");
-        test.doTestEndResult(z_greedy,x_i,y_i);
+        testPrintAndLog(z_greedy, "Result Greedy:");
+    }
+
+    protected static void testPrintAndLog(double[][] z, String str_one) throws Exception {
+        testPrintMatrix(z, str_one);
+        int[] toZero = test.doTestEndResult(z,x_i,y_i);
+        log.addResultsToLog(z, str_one);
+        log.addDistanceToZero(toZero, "Distance to Zero: ");
     }
 
     protected static double[][] doGreedy(){
