@@ -6,6 +6,22 @@ import java.util.Comparator;
 public class Rounding {
     ArrayList<Integer> activeBlocks = new ArrayList<>();
 
+
+    public double[][] doRoundingTemp(double[][] z_ij){
+        Graph[] graphen = new Graph[z_ij.length];
+        for (int j = 0; j < z_ij.length; j++){
+            graphen[j] = new Graph();
+            if (j == 0){
+                graphen[j].setGraph(j, z_ij, graphen[j]);
+            }
+            else {
+                graphen[j].setGraph(j, z_ij, graphen[j-1]);
+            }
+            graphen[j].printGraph();
+        }
+        return z_ij;
+    }
+
     public double[][] doRounding(double[][] z_ij){
         for (int j = 0; j < z_ij.length; j++){
             lookForAktivBlock(z_ij, j);

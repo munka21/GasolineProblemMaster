@@ -11,6 +11,9 @@ public class TestAlgo {
         for (int j = 0; j < n; j++){
             for (int i = 0; i < n; i++){
                 if (z_ij[i][j] > 0.0){
+                    if (index == n){
+                        break;
+                    }
                     toZero = toZero + x_i[i] - y_i[j];
                     toZeroLog[index] = toZero;
                     index++;

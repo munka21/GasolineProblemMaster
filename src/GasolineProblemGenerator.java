@@ -14,8 +14,8 @@ import java.util.Arrays;
 public class GasolineProblemGenerator {
 
     static int numberOfJobs = 5;
-    static int maxSumOfJobs = 500;
-    static int maxSizeOfOneJob = 250;
+    static int maxSumOfJobs = 250;
+    static int maxSizeOfOneJob = 80;
     static int[] y_i;
     static int[] x_i;
 
@@ -65,7 +65,8 @@ public class GasolineProblemGenerator {
             z_ij = transformation.doTransformation(z_ij, j, x_i);
             j++;
         }
-        z_ij = rounding.doRounding(z_ij);
+        //z_ij = rounding.doRounding(z_ij);
+        z_ij = rounding.doRoundingTemp(z_ij);
         return z_ij;
     }
 
