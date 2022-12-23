@@ -13,9 +13,11 @@ public class Rounding {
             graphen[j] = new Graph();
             if (j == 0){
                 graphen[j].setGraph(j, z_ij, graphen[j]);
+                graphen[j].setAktivBlockForFirstGraph(graphen[j]);
             }
             else {
                 graphen[j].setGraph(j, z_ij, graphen[j-1]);
+                graphen[j].setAktivBlock(j, graphen[j], graphen[j-1]);
             }
             graphen[j].printGraph();
         }

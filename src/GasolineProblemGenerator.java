@@ -81,7 +81,7 @@ public class GasolineProblemGenerator {
     }
 
     protected static void testPrintAndLog(double[][] z, String str_one) throws Exception {
-        testPrintMatrix(z, str_one);
+        testPrintMatrix(z, str_one, true);
         int[] toZero = test.doTestEndResult(z,x_i,y_i);
         log.addResultsToLog(z, str_one);
         log.addDistanceToZero(toZero, "Distance to Zero: ");
@@ -94,12 +94,36 @@ public class GasolineProblemGenerator {
         return z_greedy;
     }
 
-    private static void testPrintMatrix(double[][] z_ij, String str){
+    private static void testPrintMatrix(double[][] z_ij, String str, boolean round){
         int n = z_ij.length;
         System.out.println(str);
-        for (int i = 0; i < n; i++){
-            System.out.println(Arrays.toString(z_ij[i]));
+        if (round == false){
+            for (int i = 0; i < n; i++){
+                System.out.println(Arrays.toString(z_ij[i]));
+            }
         }
+        if (round == true){
+            double[][] z_ij_temp = doRound(z_ij);
+            for (int i = 0; i < n; i++){
+                System.out.println(Arrays.toString(z_ij_temp[i]));
+            }
+        }
+    }
+
+    private static double[][] doRound(double[][] z_ij){
+        int n = z_ij.length;
+        double[][] z_ij_round =  new double[n][n];
+        for (int j = 0; j < n; j++){
+            for (int i = 0; i < n; i++){
+                z_ij_round[i][j] = round(z_ij[i][j], 3);
+            }
+        }
+        return z_ij_round;
+    }
+
+    private static double round(double value, int decimalPoints) {
+        double d = Math.pow(10, decimalPoints);
+        return Math.round(value * d) / d;
     }
 
 }
