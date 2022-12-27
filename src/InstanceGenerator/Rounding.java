@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Rounding {
 
 
-    public double[][] doRoundingTemp(double[][] z_ij){
+    public double[][] doRounding(double[][] z_ij){
         Graph[] graphen = new Graph[z_ij.length];
         for (int j = 0; j < z_ij.length; j++){
             graphen[j] = new Graph();

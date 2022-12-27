@@ -65,8 +65,7 @@ public class GasolineProblemGenerator {
             z_ij = transformation.doTransformation(z_ij, j, x_i);
             j++;
         }
-        //z_ij = rounding.doRounding(z_ij);
-        z_ij = rounding.doRoundingTemp(z_ij);
+        z_ij = rounding.doRounding(z_ij);
         return z_ij;
     }
 
