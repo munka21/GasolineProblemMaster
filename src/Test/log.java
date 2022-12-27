@@ -61,11 +61,12 @@ public class log {
 
     }
 
-    public void addDistanceToZero(int[] toZero, String str) throws IOException {
+    public void addDistanceToZero(int[] toZero, String str, int sum) throws IOException {
         FileWriter fw = new FileWriter("master_log.txt", true);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(str);
         bw.write(Arrays.toString(toZero));
+        bw.write(" absolute sum: " + sum);
         bw.newLine();
         bw.close();
     }

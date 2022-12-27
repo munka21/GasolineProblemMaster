@@ -17,6 +17,14 @@ public class Graph {
         setEdges(g_last);
     }
 
+    public int getIndex_j(){
+        return index_j;
+    }
+
+    public ArrayList<Integer> getAktivBlock(){
+        return aktivBlock;
+    }
+
     private void setIndex_j(int j){
         index_j = j;
     }
@@ -86,6 +94,7 @@ public class Graph {
                 }
             }
         }
+        Collections.sort(aktivBlock);
     }
 
     public void setAktivBlockForFirstGraph(Graph G_j){

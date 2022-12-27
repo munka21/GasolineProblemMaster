@@ -4,7 +4,6 @@ import java.util.Comparator;
 
 
 public class Rounding {
-    ArrayList<Integer> activeBlocks = new ArrayList<>();
 
 
     public double[][] doRoundingTemp(double[][] z_ij){
@@ -19,35 +18,24 @@ public class Rounding {
                 graphen[j].setGraph(j, z_ij, graphen[j-1]);
                 graphen[j].setAktivBlock(j, graphen[j], graphen[j-1]);
             }
-            graphen[j].printGraph();
+            //graphen[j].printGraph();
+            z_ij = roundingAlgo(z_ij, graphen[j]);
         }
         return z_ij;
     }
 
-    public double[][] doRounding(double[][] z_ij){
-        for (int j = 0; j < z_ij.length; j++){
-            lookForAktivBlock(z_ij, j);
-            z_ij = setSolutionMatrix(z_ij, j);
-        }
+    public double[][] roundingAlgo(double[][] z_ij, Graph g){
+        int j = g.getIndex_j();
+        ArrayList<Integer> aktivBlock = g.getAktivBlock();
+        z_ij = setSolutionMatrix(z_ij, j, aktivBlock);
         return z_ij;
     }
 
-    private void lookForAktivBlock(double[][] z_ij, int j){
-        for (int i = 0; i < z_ij.length; i++){
-            if (z_ij[i][j] > 0.000000000000000){
-                if (activeBlocks.contains(i) == false){
-                    activeBlocks.add(i);
-                }
-            }
-        }
-        activeBlocks.sort(Comparator.naturalOrder());
-    }
-
-    private double[][] setSolutionMatrix(double[][] z_ij, int j){
-        for (int activeBlock : activeBlocks){
-            if (checkIfEverywhereZero(z_ij, activeBlock, j)){
-                z_ij[activeBlock][j] = 1.0;
-                setColumnToZero(z_ij, j, activeBlock);
+    private double[][] setSolutionMatrix(double[][] z_ij, int j, ArrayList<Integer> aktivBlock){
+        for (int Block : aktivBlock){
+            if (checkIfEverywhereZero(z_ij, Block, j)){
+                z_ij[Block][j] = 1.0;
+                z_ij =setColumnToZero(z_ij, j, Block);
                 break;
             }
         }

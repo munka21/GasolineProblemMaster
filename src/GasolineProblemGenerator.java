@@ -13,9 +13,9 @@ import java.util.Arrays;
 
 public class GasolineProblemGenerator {
 
-    static int numberOfJobs = 5;
-    static int maxSumOfJobs = 250;
-    static int maxSizeOfOneJob = 80;
+    static int numberOfJobs = 8;
+    static int maxSumOfJobs = 500;
+    static int maxSizeOfOneJob = 100;
     static int[] y_i;
     static int[] x_i;
 
@@ -81,10 +81,10 @@ public class GasolineProblemGenerator {
     }
 
     protected static void testPrintAndLog(double[][] z, String str_one) throws Exception {
-        testPrintMatrix(z, str_one, true);
+        testPrintMatrix(z, str_one, false);
         int[] toZero = test.doTestEndResult(z,x_i,y_i);
         log.addResultsToLog(z, str_one);
-        log.addDistanceToZero(toZero, "Distance to Zero: ");
+        log.addDistanceToZero(toZero, "Distance to Zero: ", test.getSum());
     }
 
     protected static double[][] doGreedy(){
