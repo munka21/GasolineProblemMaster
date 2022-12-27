@@ -6,7 +6,7 @@ public class Graph {
 
     private int index_j;
     private ArrayList<Integer> nodesGreaterThanZero = new ArrayList<Integer>();
-    private ArrayList<Edge> edges = new ArrayList<Edge>();;
+    private ArrayList<Edge> edges = new ArrayList<Edge>();
     HashMap mapOfEdges = new HashMap();
     private ArrayList<Integer> aktivBlock = new ArrayList<Integer>();
     HashMap mapOfAktivBlock = new HashMap();
@@ -31,7 +31,6 @@ public class Graph {
 
     private void setNodes(int j, double[][] z_ij){
         for (int i = 0; i < z_ij.length; i++){
-            String str = Integer.toString(i);
             if (z_ij[i][j] > 0.0000000000){
                 nodesGreaterThanZero.add(i);
             }
@@ -53,7 +52,7 @@ public class Graph {
                 e.node_1 = nodesGreaterThanZero.get(i);
                 e.node_2 = nodesGreaterThanZero.get(j);
                 String str = Integer.toString(e.node_1) + Integer.toString(e.node_2);
-                if (mapOfEdges.containsKey(str) == false){
+                if (!mapOfEdges.containsKey(str)){
                     edges.add(e);
                     mapOfEdges.put(str, e);
                 }
@@ -77,7 +76,7 @@ public class Graph {
         }
     }
 
-    public void setAktivBlock(int j, Graph G_j, Graph G_last){
+    public void setAktivBlock(Graph G_j, Graph G_last){
         G_j.aktivBlock.addAll(G_j.nodesGreaterThanZero);
         addAktivBlockToMap();
         for (int i = 0; i < G_j.aktivBlock.size(); i++){

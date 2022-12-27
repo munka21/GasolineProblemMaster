@@ -1,6 +1,5 @@
 package InstanceGenerator;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 
 public class Rounding {
@@ -16,7 +15,7 @@ public class Rounding {
             }
             else {
                 graphen[j].setGraph(j, z_ij, graphen[j-1]);
-                graphen[j].setAktivBlock(j, graphen[j], graphen[j-1]);
+                graphen[j].setAktivBlock(graphen[j], graphen[j-1]);
             }
             //graphen[j].printGraph();
             z_ij = roundingAlgo(z_ij, graphen[j]);

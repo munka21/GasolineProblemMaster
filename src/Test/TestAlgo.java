@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class TestAlgo {
     private int sum;
-    public int[] doTestEndResult(double[][] z_ij, int[] x_i, int[] y_i) throws Exception {
+    public int[] doTestEndResult(double[][] z_ij, int[] x_i, int[] y_i){
         int n = z_ij.length;
         int toZero = 0;
         int index = 0;

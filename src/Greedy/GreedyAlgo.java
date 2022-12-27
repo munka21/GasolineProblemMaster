@@ -36,7 +36,7 @@ public class GreedyAlgo {
     }
 
     private void addX(double[][] z_greedy, int j){
-        if (remaining_X.isEmpty() == false){
+        if (!remaining_X.isEmpty()){
             int min = Math.abs(absoluteDistanceFromZero + remaining_X.get(0));
             int index = 0;
             for (int i = 0; i < remaining_X.size(); i++){

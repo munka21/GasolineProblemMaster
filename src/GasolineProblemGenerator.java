@@ -97,12 +97,12 @@ public class GasolineProblemGenerator {
     private static void testPrintMatrix(double[][] z_ij, String str, boolean round){
         int n = z_ij.length;
         System.out.println(str);
-        if (round == false){
+        if (!round){
             for (int i = 0; i < n; i++){
                 System.out.println(Arrays.toString(z_ij[i]));
             }
         }
-        if (round == true){
+        if (round){
             double[][] z_ij_temp = doRound(z_ij);
             for (int i = 0; i < n; i++){
                 System.out.println(Arrays.toString(z_ij_temp[i]));

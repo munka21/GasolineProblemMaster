@@ -12,11 +12,11 @@ public class JobsGeneration {
     }
 
     public int[] nGenerator(int bound, int n, int sum, boolean sort) throws Exception {
-        if (isPossible(bound,n,sum) == false){
-            throw new Exception("It is not possible to make a list of jobs with these paramaters.");
+        if (!isPossible(bound,n,sum)){
+            throw new Exception("It is not possible to make a list of jobs with these parameters.");
         }
         Random random = new Random();
-        int JobList[] = new int[n];
+        int[] JobList = new int[n];
         int currentSum = 0;
         int currentJob = 0;
         for (int index = 0; index < n ;index++){
@@ -54,7 +54,7 @@ public class JobsGeneration {
                 }
             }
         }
-        if (sort == true){
+        if (sort){
             Arrays.sort(JobList);
             JobList = flipArray(JobList, n);
         }
@@ -72,7 +72,7 @@ public class JobsGeneration {
         return JobList;
     }
 
-    public void printJobs (int JobsList[], String str){
+    public void printJobs (int[] JobsList, String str){
         int length = JobsList.length;
         System.out.print( str + ":= ");
         for (int index = 0; index < length; index++){

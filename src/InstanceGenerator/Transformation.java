@@ -1,5 +1,4 @@
 package InstanceGenerator;
-import java.util.Arrays;
 
 public class Transformation {
     int i_1;
@@ -17,13 +16,13 @@ public class Transformation {
         n = z_ij.length;
         do{
             lookForIndexAndSet(z_ij, j);
-            if (isShiftPossible == true){
+            if (isShiftPossible){
                 setDelta(z_ij, j, x_i);
                 z_ij = doShift(z_ij, x_i, j);
                 calculateFractionalValues(z_ij);
                 int preventionOfRoundingError = 0;
 
-                while (check_zj() != true){
+                while (!check_zj()){
                     preventionOfRoundingError++;
                     set_j_prime(z_ij, j + 1);
                     setTransformDelta(z_ij);
@@ -107,9 +106,9 @@ public class Transformation {
 
     private void setDelta(double[][] z_ij, int j, double[] x_i){
         /*
-        Es ist ein Intelligent Wahl von Delta, wir bekommen immer das maximale Delta
+        Es ist ein intelligent Wahl von Delta, wir bekommen immer das maximale Delta
         so das entweder eine von Schranken (i_1, i_3) 0 wird oder i_2 maximal erhört
-        nur in einen Transformation Lauf. Frag ob es so bleiben kann unb erklärt wie es
+        nur in einen Transformation-Lauf. Frag, ob es so bleiben kann unb erklärt wie es
         gemacht wurde.
         ai = z_ij - (delta * yi) => weil es gleich 0 sein sollte, dann setzen wir ai = 0
         (0 - z_ij)/yi = -delta
@@ -128,10 +127,10 @@ public class Transformation {
     private void lookForIndexAndSet(double[][] z_ij, int j){
         int n = z_ij.length;
         lookForIndex_i1(z_ij, j, n);
-        if (isShiftPossible == true){
+        if (isShiftPossible){
             lookForIndex_i3(z_ij, j, n);
         }
-        if (isShiftPossible == true){
+        if (isShiftPossible){
             lookForIndex_i2(z_ij, j);
         }
     }

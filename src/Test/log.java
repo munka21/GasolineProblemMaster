@@ -56,7 +56,6 @@ public class log {
             bw.write(Arrays.toString(z[i]));
             bw.newLine();
         }
-        //bw.newLine();
         bw.close();
 
     }
